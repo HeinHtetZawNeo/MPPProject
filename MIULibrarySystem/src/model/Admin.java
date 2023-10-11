@@ -13,8 +13,5 @@ public class Admin extends LoginUser implements Serializable {
 	@Override
 	public String toString() {
 		return "Admin [UserName=" + getUserName() + ", Password=" + getPassword() + "]";
-	}
-
-
-	
+	}	
 }

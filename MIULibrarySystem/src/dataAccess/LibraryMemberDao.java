@@ -5,6 +5,8 @@ import java.util.HashMap;
 import model.LibraryMember;
 
 public class LibraryMemberDao {
+	//key->memberid
+	//value->LibraryMember
 	public HashMap<String, LibraryMember> getAllLibraryMembers() {
 		return (HashMap<String, LibraryMember>) DataAccess.readFromStorage(StorageType.MEMBER);
 	}

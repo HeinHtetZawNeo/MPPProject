@@ -9,10 +9,10 @@ public class LibraryMember extends Person implements Serializable {
 
 	private static final long serialVersionUID = 6110690276685962829L;
 
-	private int memberNumber;
+	private String memberNumber;
 	private List<CheckoutRecord> checkoutRecord;
 
-	public LibraryMember(String firstName, String lastName, String phoneNumber, Address address, int memberNumber) {
+	public LibraryMember(String firstName, String lastName, String phoneNumber, Address address, String memberNumber) {
 		super(firstName, lastName, phoneNumber, address);
 		this.memberNumber = memberNumber;
 		checkoutRecord = new ArrayList<CheckoutRecord>();
@@ -22,7 +22,7 @@ public class LibraryMember extends Person implements Serializable {
 		this.checkoutRecord.add(cr);
 	}
 
-	public int getMemberNumber() {
+	public String getMemberNumber() {
 		return memberNumber;
 	}
 
@@ -30,7 +30,7 @@ public class LibraryMember extends Person implements Serializable {
 		return checkoutRecord;
 	}
 
-	public void setMemberNumber(int memberNumber) {
+	public void setMemberNumber(String memberNumber) {
 		this.memberNumber = memberNumber;
 	}
 
