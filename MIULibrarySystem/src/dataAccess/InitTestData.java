@@ -33,7 +33,14 @@ public class InitTestData {
 		LoginUser user3 = new Librarian("lib1","lib1");
 		LoginUser user4 = new Librarian("lib2","lib2");
 		
+		HashMap<String, LoginUser > tempHashMap = new HashMap<String, LoginUser>();
+		tempHashMap.put(user1.getUserName(), user1);
+		tempHashMap.put(user2.getUserName(), user2);
+		tempHashMap.put(user3.getUserName(), user3);
+		tempHashMap.put(user4.getUserName(), user4);
 		
+		LoginUserDao mydao = new LoginUserDao();
+		mydao.updateLoginUsers(tempHashMap);
 	}
 
 	private void addBooks() {
@@ -47,7 +54,8 @@ public class InitTestData {
 		bookHashMap.put("isbn2", new Book(LocalDate.now(), "Title", "isbn", auList, 3));
 		bookHashMap.put("isbn3", new Book(LocalDate.now(), "Title", "isbn", auList, 3));
 
-		
+		BookDao mydao = new BookDao();
+		mydao.updateBookHashMap(bookHashMap);
 		
 	}
 }
