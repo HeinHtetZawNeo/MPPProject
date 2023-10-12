@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.DropMode;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import java.awt.Font;
 import java.awt.Color;
@@ -168,13 +169,17 @@ public class AddBookView extends JFrame {
 		JButton Save = new JButton("Save");
 		Save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-		
+		if(Title.getText().isEmpty() || ISBN.getText().isEmpty() || authors.isEmpty()  )
+			JOptionPane.showMessageDialog(null, "All Fields are Reuqired Please...", "alert", JOptionPane.ERROR_MESSAGE);
+		else
+		{
 				
 			 book1 = new Book(Integer.valueOf( (String) selectl.getSelectedItem()),Title.getText(),ISBN.getText(),authors, Integer.valueOf(Quantity.getText()));
 				
 			 System.out.print(book1.toString());
 			
 			dispose();
+		}
 			//	abv.setVisible(true);
 			}
 		});
@@ -205,6 +210,7 @@ public class AddBookView extends JFrame {
 			System.out.println(a.getFirstName());
 			System.out.println(a.getLastName());
 			System.out.println(a.getPhoneNumber());
+			System.out.println( "Expert= "+ a.isCredentials());
 			System.out.println("==");
 			tempModel.addElement(a.getFirstName()+" "+a.getLastName());
 		}

@@ -123,9 +123,9 @@ public class AddAuthorView extends JFrame {
 		lblNewLabel_8.setBounds(127, 437, 49, 14);
 		contentPane.add(lblNewLabel_8);
 
-		JCheckBox chckbxNewCheckBox = new JCheckBox("Yes");
-		chckbxNewCheckBox.setBounds(198, 433, 99, 23);
-		contentPane.add(chckbxNewCheckBox);
+		JCheckBox Expert = new JCheckBox("Yes");
+		Expert.setBounds(198, 433, 99, 23);
+		contentPane.add(Expert);
 
 		JLabel lblNewLabel_9 = new JLabel("Short Bio");
 		lblNewLabel_9.setBounds(114, 474, 106, 14);
@@ -141,8 +141,10 @@ public class AddAuthorView extends JFrame {
 		JButton SaveAuthoerInfo = new JButton("Save");
 		SaveAuthoerInfo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				boolean expertvalue= Expert.isSelected();
+				
 				Address location = new Address(Street.getText(), City.getText(), State.getText(), Zip.getText());
-				abv.addAuthor(new Author(FirstName.getText(), LastName.getText(), Phone.getText(), location, true,
+				abv.addAuthor(new Author(FirstName.getText(), LastName.getText(), Phone.getText(), location, expertvalue,
 						ShortBio.getText()));
 				abv.ShowAuthors();//calling the print author function
 				dispose();
