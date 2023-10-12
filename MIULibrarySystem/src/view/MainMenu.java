@@ -74,7 +74,11 @@ public class MainMenu extends JFrame {
              @Override
              public void actionPerformed(ActionEvent e) {
                  // Handle the Log Out button click
-                 JOptionPane.showMessageDialog(MainMenu.this, "Log Out clicked");
+                 //JOptionPane.showMessageDialog(MainMenu.this, "Log Out clicked");
+            	 dispose();
+            	 Login loginAgain= new Login();
+            	 loginAgain.setVisible(true);
+            	 
              }
          });
 
