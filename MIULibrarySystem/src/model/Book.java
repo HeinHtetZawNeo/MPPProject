@@ -6,25 +6,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Book implements Serializable {
-	
+
 	private static final long serialVersionUID = 6110690276685962829L;
 
-    private int borrowDay;
-    private String title;
-    private String isbnNumber;
-    private List<Author> authorList;
-    private List<BookCopy> bookCopyList;
-    
-    public Book(int borrowDay,String title,String isbnNumber,List<Author> authorList,int quantity) {
-    	this.borrowDay = borrowDay;
-    	this.title = title;
-    	this.isbnNumber = isbnNumber;
-    	this.authorList = authorList;
-    	bookCopyList = new ArrayList<BookCopy>();
-    	for(int i=1;i<=quantity;i++) {
-    		bookCopyList.add(new BookCopy(i, this));
-    	}
-    }
+	private int borrowDay;
+	private String title;
+	private String isbnNumber;
+	private List<Author> authorList;
+	private List<BookCopy> bookCopyList;
+
+	public Book(int borrowDay, String title, String isbnNumber, List<Author> authorList, int quantity) {
+		this.borrowDay = borrowDay;
+		this.title = title;
+		this.isbnNumber = isbnNumber;
+		this.authorList = authorList;
+		bookCopyList = new ArrayList<BookCopy>();
+		for (int i = 1; i <= quantity; i++) {
+			bookCopyList.add(new BookCopy(i, this));
+		}
+	}
+
+	public void addbookcopy(int qty)// quantity
+	{
+		for (int i = 1; i <= qty; i++) {
+			bookCopyList.add(new BookCopy(this.bookCopyList.size() + 1, this));
+		}
+	}
 
 	public int getBorrowDay() {
 		return borrowDay;
@@ -68,8 +75,8 @@ public class Book implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Book [borrowDay=" + borrowDay + "Quantity= "+bookCopyList.size()+ ", title=" + title + ", isbnNumber=" + isbnNumber + "]";
+		return "Book [borrowDay=" + borrowDay + "Quantity= " + bookCopyList.size() + ", title=" + title
+				+ ", isbnNumber=" + isbnNumber + "]";
 	}
-    
-    
+
 }
