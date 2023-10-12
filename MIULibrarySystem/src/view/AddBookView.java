@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.DropMode;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import java.awt.Font;
 import java.awt.Color;
@@ -21,12 +22,15 @@ import javax.swing.DefaultListModel;
 
 import java.awt.Window.Type;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractListModel;
 
+import model.Address;
 import model.Author;
+import model.Book;
 
 public class AddBookView extends JFrame {
 
@@ -39,6 +43,7 @@ public class AddBookView extends JFrame {
 	private JTextField Quantity;
 	private JList Author;
 	private List<Author> authors;
+	private Book book1; //a of books  Hasan
 	{
 		authors = new ArrayList<Author>();
 	}
@@ -101,6 +106,12 @@ public class AddBookView extends JFrame {
 		Title.setToolTipText("Title");
 		contentPane.add(Title);
 		Title.setColumns(10);
+		
+		JComboBox selectl = new JComboBox();
+		selectl.setBackground(new Color(255, 255, 255));
+		selectl.setModel(new DefaultComboBoxModel(new String[] {"21", "7"}));
+		selectl.setBounds(147, 134, 63, 22);
+		contentPane.add(selectl);
 
 		lblNewLabel_2 = new JLabel("ISBN");
 		lblNewLabel_2.setBounds(103, 101, 49, 14);
@@ -115,24 +126,6 @@ public class AddBookView extends JFrame {
 		lblNewLabel_3 = new JLabel("#OfBorrowDays");
 		lblNewLabel_3.setBounds(44, 138, 96, 14);
 		contentPane.add(lblNewLabel_3);
-
-		/*
-		 * list = new JList(new DefaultListModel<String>()); list.setBounds(165, 137, 1,
-		 * 1); contentPane.add(list);
-		 */
-
-		/*
-		 * JList list_1 = new JList(); list_1.setBounds(176, 137, 1, 1);
-		 * contentPane.add(list_1);
-		 */
-
-		JRadioButton BorrowDays21 = new JRadioButton("21");
-		BorrowDays21.setBounds(147, 134, 49, 23);
-		contentPane.add(BorrowDays21);
-
-		JRadioButton BorrowDays7 = new JRadioButton("7");
-		BorrowDays7.setBounds(198, 134, 111, 23);
-		contentPane.add(BorrowDays7);
 
 		Quantity = new JTextField();
 		Quantity.setToolTipText("Quantity");
@@ -174,6 +167,22 @@ public class AddBookView extends JFrame {
 		contentPane.add(AddAuthor);
 
 		JButton Save = new JButton("Save");
+		Save.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+		if(Title.getText().isEmpty() || ISBN.getText().isEmpty() || authors.isEmpty()  )
+			JOptionPane.showMessageDialog(null, "All Fields are Reuqired Please...", "alert", JOptionPane.ERROR_MESSAGE);
+		else
+		{
+				
+			 book1 = new Book(Integer.valueOf( (String) selectl.getSelectedItem()),Title.getText(),ISBN.getText(),authors, Integer.valueOf(Quantity.getText()));
+				
+			 System.out.print(book1.toString());
+			
+			dispose();
+		}
+			//	abv.setVisible(true);
+			}
+		});
 		Save.setForeground(new Color(0, 128, 0));
 		Save.setToolTipText("Save");
 		Save.setBounds(121, 309, 89, 23);
@@ -189,6 +198,8 @@ public class AddBookView extends JFrame {
 		Cancel.setForeground(new Color(255, 0, 0));
 		Cancel.setBounds(307, 309, 89, 23);
 		contentPane.add(Cancel);
+		
+		
 	}
 
 	protected void ShowAuthors()
@@ -199,6 +210,7 @@ public class AddBookView extends JFrame {
 			System.out.println(a.getFirstName());
 			System.out.println(a.getLastName());
 			System.out.println(a.getPhoneNumber());
+			System.out.println( "Expert= "+ a.isCredentials());
 			System.out.println("==");
 			tempModel.addElement(a.getFirstName()+" "+a.getLastName());
 		}
