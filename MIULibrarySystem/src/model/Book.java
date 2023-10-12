@@ -9,13 +9,13 @@ public class Book implements Serializable {
 	
 	private static final long serialVersionUID = 6110690276685962829L;
 
-    private LocalDate borrowDay;
+    private int borrowDay;
     private String title;
     private String isbnNumber;
     private List<Author> authorList;
     private List<BookCopy> bookCopyList;
     
-    public Book(LocalDate borrowDay,String title,String isbnNumber,List<Author> authorList,int quantity) {
+    public Book(int borrowDay,String title,String isbnNumber,List<Author> authorList,int quantity) {
     	this.borrowDay = borrowDay;
     	this.title = title;
     	this.isbnNumber = isbnNumber;
@@ -26,7 +26,7 @@ public class Book implements Serializable {
     	}
     }
 
-	public LocalDate getBorrowDay() {
+	public int getBorrowDay() {
 		return borrowDay;
 	}
 
@@ -46,7 +46,7 @@ public class Book implements Serializable {
 		return bookCopyList;
 	}
 
-	public void setBorrowDay(LocalDate borrowDay) {
+	public void setBorrowDay(int borrowDay) {
 		this.borrowDay = borrowDay;
 	}
 
@@ -68,7 +68,7 @@ public class Book implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Book [borrowDay=" + borrowDay.getDayOfMonth() + ", title=" + title + ", isbnNumber=" + isbnNumber + "]";
+		return "Book [borrowDay=" + borrowDay + "Quantity= "+bookCopyList.size()+ ", title=" + title + ", isbnNumber=" + isbnNumber + "]";
 	}
     
     
