@@ -1,10 +1,8 @@
 package dataAccess;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import model.*;
 
@@ -32,12 +30,14 @@ public class InitTestData {
 		LoginUser user2 = new Admin("admin2","admin2");
 		LoginUser user3 = new Librarian("lib1","lib1");
 		LoginUser user4 = new Librarian("lib2","lib2");
+		LoginUser user5 = new SuperUser("super","super");
 		
 		HashMap<String, LoginUser > tempHashMap = new HashMap<String, LoginUser>();
 		tempHashMap.put(user1.getUserName(), user1);
 		tempHashMap.put(user2.getUserName(), user2);
 		tempHashMap.put(user3.getUserName(), user3);
 		tempHashMap.put(user4.getUserName(), user4);
+		tempHashMap.put(user4.getUserName(), user5);
 		
 		LoginUserDao mydao = new LoginUserDao();
 		mydao.updateLoginUsers(tempHashMap);
@@ -48,11 +48,14 @@ public class InitTestData {
 		auList.add(new Author("A_FirstName", "A_LastName", "PhoneNumber", new Address("Street", "City", "State", "Zip"),
 				false, "Short BIO"));
 		
+		auList.add(new Author("A_FirstName2", "A_LastName2", "PhoneNumber", new Address("Street", "City", "State", "Zip"),
+				false, "Short BIO"));
+		
 		HashMap<String, Book> bookHashMap = new HashMap<String, Book>();
-		bookHashMap.put("isbn", new Book(LocalDate.now(), "Title", "isbn", auList, 3));
-		bookHashMap.put("isbn1", new Book(LocalDate.now(), "Title", "isbn", auList, 3));
-		bookHashMap.put("isbn2", new Book(LocalDate.now(), "Title", "isbn", auList, 3));
-		bookHashMap.put("isbn3", new Book(LocalDate.now(), "Title", "isbn", auList, 3));
+		bookHashMap.put("isbn", new Book(7, "Title", "isbn", auList, 1));
+		bookHashMap.put("isbn1", new Book(7, "Title", "isbn1", auList, 3));
+		bookHashMap.put("isbn2", new Book(21, "Title", "isbn2", auList, 3));
+		bookHashMap.put("isbn3", new Book(21, "Title", "isbn3", auList, 3));
 
 		BookDao mydao = new BookDao();
 		mydao.updateBookHashMap(bookHashMap);
