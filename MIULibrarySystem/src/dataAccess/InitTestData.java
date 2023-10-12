@@ -37,7 +37,7 @@ public class InitTestData {
 		tempHashMap.put(user2.getUserName(), user2);
 		tempHashMap.put(user3.getUserName(), user3);
 		tempHashMap.put(user4.getUserName(), user4);
-		tempHashMap.put(user4.getUserName(), user5);
+		tempHashMap.put(user5.getUserName(), user5);
 		
 		LoginUserDao mydao = new LoginUserDao();
 		mydao.updateLoginUsers(tempHashMap);

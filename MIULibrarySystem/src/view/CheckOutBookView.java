@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import controller.CheckOutBookController;
 import exception.LibrarySystemException;
 import model.LibraryMember;
+import model.LoginUser;
 
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -19,8 +20,13 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
+
+import model.Book;
+import model.CheckoutEntry;
+import model.CheckoutRecord;
 
 public class CheckOutBookView extends JFrame {
 
@@ -30,33 +36,26 @@ public class CheckOutBookView extends JFrame {
 	private JList jlstBooklist;
 	private JButton btnSearchMember;
 	private JLabel lblMemberName;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CheckOutBookView frame = new CheckOutBookView();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private HashMap<String,Book> bookmap;
+	private LibraryMember member;
+	private LoginUser loginuser;
+	
 
 	/**
 	 * Create the frame.
 	 */
-	public CheckOutBookView() {
+	public CheckOutBookView(LoginUser loginuser) {
+		
+		this.loginuser=loginuser;
+		this.bookmap = new HashMap<String, Book>();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
 		setContentPane(contentPane);
+		setLocationRelativeTo(null);
 		contentPane.setLayout(null);
 
 		JLabel lblCheckOutBook = new JLabel("Check Out");
@@ -89,7 +88,7 @@ public class CheckOutBookView extends JFrame {
 		JButton btnAddBook = new JButton("Add Book");
 		btnAddBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				addBook();
+				btnAddBook_click();
 			}
 		});
 		btnAddBook.setBounds(290, 99, 139, 29);
@@ -98,12 +97,18 @@ public class CheckOutBookView extends JFrame {
 		JButton btnCheckOut = new JButton("CheckOut");
 		btnCheckOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				checkout();
 			}
 		});
 		btnCheckOut.setBounds(33, 237, 134, 29);
 		contentPane.add(btnCheckOut);
 
 		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cancel_Click();
+			}
+		});
 		btnCancel.setBounds(295, 237, 134, 29);
 		contentPane.add(btnCancel);
 
@@ -123,6 +128,40 @@ public class CheckOutBookView extends JFrame {
 		lblMemberName = new JLabel("");
 		lblMemberName.setBounds(130, 78, 299, 16);
 		contentPane.add(lblMemberName);
+		
+	}
+
+	protected void cancel_Click() {
+		MainMenuView mm = new MainMenuView(this.loginuser);
+		mm.displayMenu();
+		this.dispose();
+	}
+
+	protected void checkout() {
+		try {
+			if(member==null) throw new LibrarySystemException("Add Library Member");
+			if(bookmap.size()==0) throw new LibrarySystemException("Add at least one Book");
+			
+			CheckOutBookController cob = new CheckOutBookController();
+			member = cob.checkOut(member,bookmap);
+			
+			MainMenuView mmv = new MainMenuView(this.loginuser);
+			mmv.setVisible(true);
+			this.dispose();
+
+		} catch (LibrarySystemException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+			txtMemberID.setText("");
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+			txtMemberID.setText("");
+		}
+	}
+
+	protected void btnAddBook_click() {
+		CheckOutBook_AddBookView cob_abv = new CheckOutBook_AddBookView(this);
+		this.hide();
+		cob_abv.setVisible(true);
 	}
 
 	protected void checkMember() {
@@ -132,7 +171,7 @@ public class CheckOutBookView extends JFrame {
 				throw new LibrarySystemException("Enter Valid Memeber ID");
 			
 			CheckOutBookController cob = new CheckOutBookController();
-			LibraryMember member = cob.checkMember(txtMemberID.getText());
+			member = cob.checkMember(txtMemberID.getText());
 			
 			txtMemberID.setEnabled(false);
 			btnSearchMember.setEnabled(false);
@@ -147,9 +186,16 @@ public class CheckOutBookView extends JFrame {
 		}
 	}
 
-	protected void addBook() {
-		
+	protected void showBook() {
 		DefaultListModel tempModel = (DefaultListModel) jlstBooklist.getModel();
-		tempModel.addElement("Hello 1");
+		tempModel.clear();
+		this.bookmap.forEach((k,v)->{
+			tempModel.addElement(k +" - " + v.getTitle());
+		});
+	}
+	
+	public void addBook(Book b) {
+		this.bookmap.put(b.getIsbnNumber(), b);
+		showBook();
 	}
 }

@@ -2,6 +2,7 @@ package model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CheckoutRecord implements Serializable {
@@ -14,9 +15,12 @@ public class CheckoutRecord implements Serializable {
     	totalFine = 0.0;
     	datePaid = null;
     }
-	public CheckoutRecord(List<CheckoutEntry> checkoutEntries) {
+	public CheckoutRecord() {
 		super();
-		this.checkoutEntries = checkoutEntries;
+		this.checkoutEntries = new ArrayList<CheckoutEntry>();
+	}
+	public void addCheckOutEntry(CheckoutEntry ce) {
+		checkoutEntries.add(ce);
 	}
 	public double getTotalFine() {
 		return totalFine;
@@ -32,9 +36,6 @@ public class CheckoutRecord implements Serializable {
 	}
 	public void setDatePaid(LocalDate datePaid) {
 		this.datePaid = datePaid;
-	}
-	public void setCheckoutEntries(List<CheckoutEntry> checkoutEntries) {
-		this.checkoutEntries = checkoutEntries;
 	}
 	@Override
 	public String toString() {

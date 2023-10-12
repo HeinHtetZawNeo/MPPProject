@@ -20,7 +20,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Login extends JFrame {
+public class LoginView extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField usernameField;
@@ -29,7 +29,7 @@ public class Login extends JFrame {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(() -> {
 			try {
-				Login frame = new Login();
+				LoginView frame = new LoginView();
 				frame.setVisible(true);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -37,11 +37,10 @@ public class Login extends JFrame {
 		});
 	}
 
-	public Login() {
+	public LoginView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("WELCOME TO MAHARISHI INTERNATIONAL UNIVERSITY LIBRARY");
 		setBounds(200, 200, 650, 500);
-		// setColor();
 
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(255, 255, 255));
@@ -54,7 +53,7 @@ public class Login extends JFrame {
 		JLabel backgroundLabel = new JLabel();
 		backgroundLabel.setBackground(Color.PINK);
 		backgroundLabel.setBounds(3, 16, 640, 262);
-		ImageIcon imageIcon = new ImageIcon(Login.class.getResource("/view/resources/IMAGE3.jpg"));
+		ImageIcon imageIcon = new ImageIcon(LoginView.class.getResource("/view/resources/IMAGE3.jpg"));
 		backgroundLabel.setIcon(imageIcon);
 		contentPane.add(backgroundLabel);
 
@@ -90,32 +89,33 @@ public class Login extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// Perform actions when the Enter button is clicked
-				login();
+				login_Click();
 
 			}
 		});
 	}// constructor
 
-	protected void login() {
+	protected void login_Click() {
 		// Perform actions when the Enter button is clicked
 		String username = usernameField.getText();
 		char[] password = passwordField.getPassword();
 		try {
-			if (username.trim().equals("") || String.valueOf(password).trim().equals("")) {
-				throw new LoginException("INVALID LOGIN CREDENTIALS");
+			if (username.trim().equals("")) {
+				throw new LoginException("Add User Name");
+			} else if (String.valueOf(password).trim().equals("")) {
+				throw new LoginException("Add Password");
 			} else {
 				LoginController controller = new LoginController();
-				LoginUser loginUser=controller.verifyUsernamePassword(username, password);
-				
-				MainMenu mm = new MainMenu();
-				mm.displayMenu(loginUser);
-				dispose();
-				
+				LoginUser loginUser = controller.verifyUsernamePassword(username, password);
+
+				MainMenuView mm = new MainMenuView(loginUser);
+				mm.displayMenu();
+				this.dispose();
 			}
 		} catch (LoginException exc) {
 
 			JOptionPane.showMessageDialog(this, exc.getMessage());
-		}finally {
+		} finally {
 			usernameField.setText("");
 			passwordField.setText("");
 		}

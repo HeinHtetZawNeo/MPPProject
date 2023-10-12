@@ -10,8 +10,9 @@ public class LoginController {
 	public LoginUser verifyUsernamePassword (String username, char[]password) throws LoginException {
 		LoginUserDao user = new LoginUserDao();
 		HashMap<String,LoginUser> usermap =user.getAllLoginUsers();
+		System.out.println(usermap.size());
 		if(usermap.get(username)==null) {
-			throw new LoginException("INVALID USER");
+			throw new LoginException("Invalid User");
 		}
 		return usermap.get(username);
 	}
