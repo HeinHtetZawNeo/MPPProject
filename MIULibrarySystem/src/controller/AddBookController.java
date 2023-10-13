@@ -26,7 +26,7 @@ public class AddBookController {
 		for(Author a:book.getAuthorList()) {
 			allAuthor.put(a.getFirstName()+" "+a.getLastName(), a);
 		}
-		authordao.updateBookHashMap(allAuthor);
+		authordao.updateAllAuthorHashMap(allAuthor);
 	}
 
 }

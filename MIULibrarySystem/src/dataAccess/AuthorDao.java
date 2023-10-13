@@ -11,7 +11,7 @@ public class AuthorDao {
 		return (HashMap<String, Author>) DataAccess.readFromStorage(StorageType.AUTHOR);
 	}
 
-	public HashMap<String, Author> updateBookHashMap(HashMap<String, Author> authorList) {
+	public HashMap<String, Author> updateAllAuthorHashMap(HashMap<String, Author> authorList) {
 		DataAccess.saveToStorage(StorageType.AUTHOR, authorList);
 		return (HashMap<String, Author>) DataAccess.readFromStorage(StorageType.AUTHOR);
 	}

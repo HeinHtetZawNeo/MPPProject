@@ -25,6 +25,9 @@ public class InitTestData {
 
 		authMap.put(a1.getFirstName() + " " + a1.getLastName(), a1);
 		authMap.put(a2.getFirstName() + " " + a2.getLastName(), a2);
+		
+		AuthorDao authorDao = new AuthorDao();
+		authorDao.updateAllAuthorHashMap(authMap);
 	}
 
 	private void addLibraryMember() {

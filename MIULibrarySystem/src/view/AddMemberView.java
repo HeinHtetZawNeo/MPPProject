@@ -36,6 +36,7 @@ public class AddMemberView extends JFrame {
 	private JButton btnCancel;
 	private JButton btnSave;
 	private LoginUser loginUser;
+	private JTextField txtPhoneNumber;
 
 	/**
 	 * Launch the application.
@@ -64,7 +65,7 @@ public class AddMemberView extends JFrame {
 		String membId = addMembController.generateMemberId();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 390);
+		setBounds(100, 100, 411, 428);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
@@ -111,47 +112,47 @@ public class AddMemberView extends JFrame {
 		contentPane.add(lblNewLabel_3);
 
 		txtStreet = new JTextField();
-		txtStreet.setBounds(180, 160, 200, 30);
+		txtStreet.setBounds(180, 200, 200, 30);
 		contentPane.add(txtStreet);
 		txtStreet.setColumns(10);
 
 		JLabel lblNewLabel_4 = new JLabel("Street");
 		lblNewLabel_4.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_4.setBounds(20, 160, 150, 30);
+		lblNewLabel_4.setBounds(20, 200, 150, 30);
 		contentPane.add(lblNewLabel_4);
 
 		JLabel lblNewLabel_5 = new JLabel("City");
 		lblNewLabel_5.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_5.setBounds(20, 200, 150, 30);
+		lblNewLabel_5.setBounds(20, 240, 150, 30);
 		contentPane.add(lblNewLabel_5);
 
 		JLabel lblNewLabel_6 = new JLabel("State");
 		lblNewLabel_6.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_6.setBounds(20, 240, 150, 30);
+		lblNewLabel_6.setBounds(20, 280, 150, 30);
 		contentPane.add(lblNewLabel_6);
 
 		JLabel lblNewLabel_7 = new JLabel("Zip");
 		lblNewLabel_7.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_7.setBounds(20, 280, 150, 30);
+		lblNewLabel_7.setBounds(20, 320, 150, 30);
 		contentPane.add(lblNewLabel_7);
 
 		txtCity = new JTextField();
-		txtCity.setBounds(180, 200, 200, 30);
+		txtCity.setBounds(180, 240, 200, 30);
 		contentPane.add(txtCity);
 		txtCity.setColumns(10);
 
 		txtState = new JTextField();
-		txtState.setBounds(180, 240, 200, 30);
+		txtState.setBounds(180, 280, 200, 30);
 		contentPane.add(txtState);
 		txtState.setColumns(10);
 
 		txtZip = new JTextField();
-		txtZip.setBounds(180, 280, 200, 30);
+		txtZip.setBounds(180, 320, 200, 30);
 		contentPane.add(txtZip);
 		txtZip.setColumns(10);
 
 		btnSave = new JButton("Save");
-		btnSave.setBounds(20, 320, 150, 30);
+		btnSave.setBounds(20, 360, 150, 30);
 		contentPane.add(btnSave);
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -160,8 +161,18 @@ public class AddMemberView extends JFrame {
 		});
 
 		JButton btnCancel = new JButton("Cancel");
-		btnCancel.setBounds(263, 320, 117, 30);
+		btnCancel.setBounds(263, 360, 117, 30);
 		contentPane.add(btnCancel);
+		
+		JLabel lblNewLabel_8 = new JLabel("Phone Number");
+		lblNewLabel_8.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_8.setBounds(20, 160, 150, 30);
+		contentPane.add(lblNewLabel_8);
+		
+		txtPhoneNumber = new JTextField();
+		txtPhoneNumber.setBounds(180, 160, 200, 30);
+		contentPane.add(txtPhoneNumber);
+		txtPhoneNumber.setColumns(10);
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cancel_Click();
@@ -191,7 +202,7 @@ public class AddMemberView extends JFrame {
 
 			AddMemberController addMemberController = new AddMemberController();
 			Address add = new Address(txtStreet.getText(), txtCity.getText(), txtState.getText(), txtZip.getText());
-			LibraryMember member = new LibraryMember(txtFirstName.getText(), txtLastName.getText(), "", add,
+			LibraryMember member = new LibraryMember(txtFirstName.getText(), txtLastName.getText(), txtPhoneNumber.getText(), add,
 					txtMemberID.getText());
 			addMemberController.addMember(member);
 			JOptionPane.showMessageDialog(this, "MEMBER ADDED SUCCESSFULLY");

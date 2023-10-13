@@ -167,6 +167,7 @@ public class CheckOutBookView extends JFrame {
 			});
 			member = cob.checkOut(member, myBookCopy);
 
+			JOptionPane.showMessageDialog(this, "Checkout Successfully");
 			MainMenuView mmv = new MainMenuView(this.loginuser);
 			mmv.setVisible(true);
 			this.dispose();

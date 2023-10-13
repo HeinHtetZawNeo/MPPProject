@@ -182,6 +182,11 @@ public class AddBookView extends JFrame {
 
 			AddBookController abc = new AddBookController();
 			abc.addbook(book);
+			
+			JOptionPane.showMessageDialog(this, "Book is saved Successfully");
+			MainMenuView mmv = new MainMenuView(loginuser);
+			mmv.setVisible(true);
+			this.dispose();
 		} catch (LibrarySystemException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		} catch (Exception e) {
