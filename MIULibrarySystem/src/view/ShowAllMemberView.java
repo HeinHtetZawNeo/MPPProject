@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 import controller.ShowAllController;
 import model.LoginUser;
@@ -17,6 +19,8 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class ShowAllMemberView extends JFrame {
 
@@ -24,6 +28,7 @@ public class ShowAllMemberView extends JFrame {
 	private JPanel contentPane;
 	private JTable bookTable;
 	private LoginUser loginUser;
+	private String[][] data;
 
 	/**
 	 * Launch the application.
@@ -61,9 +66,19 @@ public class ShowAllMemberView extends JFrame {
 		lblNewLabel.setBounds(10, 10, 580, 30);
 		contentPane.add(lblNewLabel);
 
-		String[] columnNames = { "Member ID", "Name", "Phone No", "Street","City","State","Zip" };
-		String[][] data = showMemberData();
+		String[] columnNames = { "Member ID", "Name", "Phone No", "Street", "City", "State", "Zip" };
+		data = showMemberData();
 		bookTable = new JTable(data, columnNames);
+		bookTable.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					JTable target = (JTable) e.getSource();
+					jtableClick(target.getSelectedRow());
+				}
+			}
+		});
+		//make jtable not to editable
+		bookTable.setDefaultEditor(Object.class, null);
 		bookTable.setBounds(10, 30, 450, 300);
 
 		JScrollPane sp = new JScrollPane(bookTable);
@@ -74,14 +89,20 @@ public class ShowAllMemberView extends JFrame {
 		JButton btnOK = new JButton("OK");
 		btnOK.setBounds(250, 360, 100, 20);
 		btnOK.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				btnOK_click();
-				
+
 			}
 		});
 		contentPane.add(btnOK);
+	}
+
+	protected void jtableClick(int rowNumber) {
+		this.setVisible(false);
+		MemberHistoryView mhv = new MemberHistoryView(this,data[rowNumber][0]);
+		mhv.setVisible(true);
 	}
 
 	protected void btnOK_click() {

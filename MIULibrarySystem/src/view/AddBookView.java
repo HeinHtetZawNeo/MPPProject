@@ -38,7 +38,9 @@ import model.Book;
 import model.LoginUser;
 
 public class AddBookView extends JFrame {
-
+/*
+ * Check isbn is exist or not
+ */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JLabel lblNewLabel_3;

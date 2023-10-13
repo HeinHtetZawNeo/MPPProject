@@ -61,7 +61,7 @@ public class ShowAllBookView extends JFrame {
 		lblNewLabel.setBounds(10, 10, 453, 30);
 		contentPane.add(lblNewLabel);
 
-		String[] columnNames = { "ISBN", "Title", "No Of Copy", "Available" };
+		String[] columnNames = { "ISBN", "Title", "No Of Copy", "Available","In Circulation" };
 		String[][] data = showBookData();
 		bookTable = new JTable(data, columnNames);
 		bookTable.setBounds(10, 30, 450, 300);
