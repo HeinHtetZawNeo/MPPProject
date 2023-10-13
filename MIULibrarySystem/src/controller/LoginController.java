@@ -14,6 +14,11 @@ public class LoginController {
 		if(usermap.get(username)==null) {
 			throw new LoginException("Invalid User");
 		}
+		LoginUser lguser=usermap.get(username);
+		String passwrd = String.valueOf(password);
+		if(!passwrd.equals(lguser.getPassword())) {
+			throw new LoginException("Invalid User or Password");
+		}
 		return usermap.get(username);
 	}
 }
