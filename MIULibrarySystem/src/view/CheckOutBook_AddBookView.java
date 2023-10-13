@@ -42,6 +42,7 @@ public class CheckOutBook_AddBookView extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
+		setResizable(false);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);

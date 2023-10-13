@@ -47,6 +47,7 @@ public class LoginView extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
+		setResizable(false);
 		contentPane.setLayout(null); // Use null layout for absolute positioning
 
 		// Background Image Label

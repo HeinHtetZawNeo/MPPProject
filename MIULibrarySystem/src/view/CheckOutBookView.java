@@ -71,6 +71,7 @@ public class CheckOutBookView extends JFrame {
 
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
+		setResizable(false);
 		contentPane.setLayout(null);
 
 		JLabel lblCheckOutBook = new JLabel("Check Out");

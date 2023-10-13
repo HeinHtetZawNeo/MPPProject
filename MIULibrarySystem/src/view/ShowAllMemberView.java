@@ -26,7 +26,7 @@ public class ShowAllMemberView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTable bookTable;
+	private JTable memberTable;
 	private LoginUser loginUser;
 	private String[][] data;
 
@@ -56,6 +56,7 @@ public class ShowAllMemberView extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
+		setResizable(false);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -68,8 +69,8 @@ public class ShowAllMemberView extends JFrame {
 
 		String[] columnNames = { "Member ID", "Name", "Phone No", "Street", "City", "State", "Zip" };
 		data = showMemberData();
-		bookTable = new JTable(data, columnNames);
-		bookTable.addMouseListener(new MouseAdapter() {
+		memberTable = new JTable(data, columnNames);
+		memberTable.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					JTable target = (JTable) e.getSource();
@@ -77,11 +78,12 @@ public class ShowAllMemberView extends JFrame {
 				}
 			}
 		});
-		//make jtable not to editable
-		bookTable.setDefaultEditor(Object.class, null);
-		bookTable.setBounds(10, 30, 450, 300);
+		// make jtable not to editable
+		memberTable.setDefaultEditor(Object.class, null);
+		memberTable.setAutoCreateRowSorter(true);
+		memberTable.setBounds(10, 30, 450, 300);
 
-		JScrollPane sp = new JScrollPane(bookTable);
+		JScrollPane sp = new JScrollPane(memberTable);
 		sp.setLocation(10, 40);
 		sp.setSize(580, 309);
 		contentPane.add(sp);
@@ -101,7 +103,7 @@ public class ShowAllMemberView extends JFrame {
 
 	protected void jtableClick(int rowNumber) {
 		this.setVisible(false);
-		MemberHistoryView mhv = new MemberHistoryView(this,data[rowNumber][0]);
+		MemberHistoryView mhv = new MemberHistoryView(this, data[rowNumber][0]);
 		mhv.setVisible(true);
 	}
 

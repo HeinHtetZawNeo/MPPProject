@@ -43,6 +43,7 @@ public class MemberCheckOutEntryView extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setLocationRelativeTo(null);
+		setResizable(false);
 
 		jtbRecordDetail = new JTable();
 		jtbRecordDetail.setBounds(44, 220, 0, 0);

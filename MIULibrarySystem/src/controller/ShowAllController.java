@@ -30,7 +30,7 @@ public class ShowAllController {
 		return result;
 	}
 
-	private String isAvailable(Book book,String type) {
+	public String isAvailable(Book book,String type) {
 		int result = 0;
 		for (BookCopy bc : book.getBookCopyList()) {
 			if (bc.isAvailability()&&type.equals("Available"))
@@ -87,6 +87,12 @@ public class ShowAllController {
 		}
 
 		return result;
+	}
+
+	public Book getBook(String isbn) {
+		BookDao bookdao = new BookDao();
+		
+		return bookdao.getAllBook().get(isbn);
 	}
 
 }

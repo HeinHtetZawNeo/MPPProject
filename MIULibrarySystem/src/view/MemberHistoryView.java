@@ -45,7 +45,7 @@ public class MemberHistoryView extends JFrame {
 	private JLabel lblState;
 	private JLabel lblZip;
 	private JButton btnOK;
-	private ShowAllMemberView showAllMemberView;
+	private JFrame previousFrame;
 	private String memberID;
 	private String[][] data;
 
@@ -68,8 +68,8 @@ public class MemberHistoryView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MemberHistoryView(ShowAllMemberView showAllMemberView, String memberID) {
-		this.showAllMemberView = showAllMemberView;
+	public MemberHistoryView(JFrame previousFrame, String memberID) {
+		this.previousFrame = previousFrame;
 		this.memberID = memberID;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 423, 583);
@@ -79,6 +79,7 @@ public class MemberHistoryView extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		setLocationRelativeTo(null);
+		setResizable(false);
 
 		JLabel lblNewLabel = new JLabel("Member Detail");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -206,7 +207,7 @@ public class MemberHistoryView extends JFrame {
 	}
 
 	protected void btnOK_click() {
-		showAllMemberView.setVisible(true);
+		previousFrame.setVisible(true);
 		this.dispose();
 		;
 	}

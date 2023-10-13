@@ -24,6 +24,7 @@ public class MainMenuView extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(600, 300);
 		setLocationRelativeTo(null); // Center the frame on the screen
+		setResizable(false);
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(3, 2, 10, 10)); // 3 rows, 2 columns with 10-pixel gaps

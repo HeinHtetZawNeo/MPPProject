@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import exception.LibrarySystemException;
+import helper.Helper;
 import model.Address;
 import model.Author;
 import model.LoginUser;
@@ -22,6 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.regex.Pattern;
 
 public class AddAuthorView extends JFrame {
 
@@ -63,7 +65,7 @@ public class AddAuthorView extends JFrame {
 		setBounds(100, 100, 419, 535);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(null);
+		contentPane.setLayout(null);setResizable(false);
 
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
@@ -207,6 +209,8 @@ public class AddAuthorView extends JFrame {
 				throw new LibrarySystemException("Enter Last Name");
 			if (txtPhoneNumber.getText().isBlank())
 				throw new LibrarySystemException("Enter Phone Number");
+			if(!Helper.isPhoneNumber(txtPhoneNumber.getText()))
+				throw new LibrarySystemException("Enter Valid Phone Number");
 			if (txtStreet.getText().isBlank())
 				throw new LibrarySystemException("Enter Street");
 			if (txtCity.getText().isBlank())

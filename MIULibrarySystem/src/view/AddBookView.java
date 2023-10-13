@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import controller.AddBookController;
 import exception.LibrarySystemException;
+import helper.Helper;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -87,7 +88,7 @@ public class AddBookView extends JFrame {
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+		setResizable(false);
 		JLabel lblNewLabel = new JLabel("Add New Book");
 		lblNewLabel.setBounds(220, 10, 200, 20);
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD, 16));
@@ -170,12 +171,14 @@ public class AddBookView extends JFrame {
 				throw new LibrarySystemException("Enter Title");
 			if (txtISBN.getText().isBlank())
 				throw new LibrarySystemException("Enter ISBN Number");
-			if (authors.size() == 0)
-				throw new LibrarySystemException("Add at least one author");
+			if (!Helper.isISBNNumber(txtISBN.getText()))
+				throw new LibrarySystemException("Enter Valid ISBN Number");
 			if (txtQuantity.getText().isBlank())
 				throw new LibrarySystemException("Enter Quantity");
-			if (!txtQuantity.getText().matches("-?\\d+(\\.\\d+)?"))
-				throw new LibrarySystemException("Enter Quantity with valid input");
+			if (!Helper.isNumber(txtQuantity.getText()))
+				throw new LibrarySystemException("Enter Valid Quantity");
+			if (authors.size() == 0)
+				throw new LibrarySystemException("Add at least one author");
 
 			Book book = new Book(Integer.parseInt(cmbBorrowDay.getSelectedItem() + ""), txtTitle.getText(),
 					txtISBN.getText(), authors, Integer.parseInt(txtQuantity.getText()));

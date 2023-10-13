@@ -10,6 +10,7 @@ import javax.swing.border.EmptyBorder;
 import controller.AddBookController;
 import controller.BookCopyController;
 import exception.LibrarySystemException;
+import helper.Helper;
 import model.Book;
 import model.LoginUser;
 
@@ -59,6 +60,7 @@ public class AddBookCopyView extends JFrame {
 		setLocationRelativeTo(null);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setResizable(false);
 
 		JLabel lblNewLabel = new JLabel("Add Book Copy");
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD, 16));
@@ -113,9 +115,11 @@ public class AddBookCopyView extends JFrame {
 		try {
 			if (txtIsbnNumber.getText().isBlank())
 				throw new LibrarySystemException("Enter ISBN Number");
+			if (!Helper.isISBNNumber(txtIsbnNumber.getText()))
+				throw new LibrarySystemException("Enter valid ISBN Number");
 			if (txtQty.getText().isBlank())
 				throw new LibrarySystemException("Enter Qty");
-			if (!txtQty.getText().matches("-?\\d+(\\.\\d+)?"))
+			if (!Helper.isNumber(txtQty.getText()))
 				throw new LibrarySystemException("Enter Valid Qty");
 
 			BookCopyController bookcopy = new BookCopyController();

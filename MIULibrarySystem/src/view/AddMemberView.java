@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 
 import controller.AddMemberController;
 import exception.LibrarySystemException;
+import helper.Helper;
 import model.LibraryMember;
 import model.LoginUser;
 import model.Address;
@@ -69,6 +70,7 @@ public class AddMemberView extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
+		setResizable(false);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -188,17 +190,21 @@ public class AddMemberView extends JFrame {
 	public void save_Click() {
 		try {
 			if (txtFirstName.getText().isBlank())
-				throw new LibrarySystemException("First Name can't be null!");
+				throw new LibrarySystemException("Enter First Name");
 			if (txtLastName.getText().isBlank())
-				throw new LibrarySystemException("Last Name can't be null!");
+				throw new LibrarySystemException("Enter Last Name");
+			if (txtPhoneNumber.getText().isBlank())
+				throw new LibrarySystemException("Enter Phone Number");
+			if (!Helper.isPhoneNumber(txtPhoneNumber.getText()))
+				throw new LibrarySystemException("Enter Valid Phone Number");
 			if (txtStreet.getText().isBlank())
-				throw new LibrarySystemException("Street field can't be empty!");
+				throw new LibrarySystemException("Enter Street");
 			if (txtCity.getText().isEmpty())
-				throw new LibrarySystemException("City field can't be empty");
+				throw new LibrarySystemException("Enter City");
 			if (txtState.getText().isBlank())
-				throw new LibrarySystemException("State field can't be empty");
+				throw new LibrarySystemException("Enter State");
 			if (txtZip.getText().isBlank())
-				throw new LibrarySystemException("Zip field can't be empty");
+				throw new LibrarySystemException("Enter Zip");
 
 			AddMemberController addMemberController = new AddMemberController();
 			Address add = new Address(txtStreet.getText(), txtCity.getText(), txtState.getText(), txtZip.getText());
