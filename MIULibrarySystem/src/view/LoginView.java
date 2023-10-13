@@ -98,7 +98,7 @@ public class LoginView extends JFrame {
 	protected void login_Click() {
 		// Perform actions when the Enter button is clicked
 		String username = usernameField.getText();
-		char[] password = passwordField.getPassword();
+		String password = new String(passwordField.getPassword());
 		try {
 			if (username.trim().equals("")) {
 				throw new LoginException("Add User Name");
@@ -107,18 +107,18 @@ public class LoginView extends JFrame {
 			} else {
 				LoginController controller = new LoginController();
 				LoginUser loginUser = controller.verifyUsernamePassword(username, password);
-
+				if (loginUser == null)
+					throw new LoginException("Invalid Credential");
+				
 				MainMenuView mm = new MainMenuView(loginUser);
-				mm.displayMenu();
+				mm.setVisible(true);
 				this.dispose();
 			}
 		} catch (LoginException exc) {
-
 			JOptionPane.showMessageDialog(this, exc.getMessage());
 		} finally {
 			usernameField.setText("");
 			passwordField.setText("");
 		}
-
 	}
 }// class

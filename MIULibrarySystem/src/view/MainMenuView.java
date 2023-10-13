@@ -23,10 +23,6 @@ public class MainMenuView extends JFrame {
 		setSize(600, 300);
 		setLocationRelativeTo(null); // Center the frame on the screen
 
-	}
-
-	public void displayMenu() {
-		
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(3, 2, 10, 10)); // 3 rows, 2 columns with 10-pixel gaps
 		// Create buttons
@@ -122,12 +118,15 @@ public class MainMenuView extends JFrame {
 	}
 
 	protected void addBookCopy_Click() {
-
+		AddBookCopyView abcv = new AddBookCopyView(this.loginUser);
+		abcv.setVisible(true);
+		this.dispose();
 	}
 
 	protected void addBook_Click() {
-		// TODO Auto-generated method stub
-
+		AddBookView abv = new AddBookView(this.loginUser);
+		abv.setVisible(true);
+		this.dispose();
 	}
 
 	protected void checkOut_Click() {
@@ -137,5 +136,8 @@ public class MainMenuView extends JFrame {
 	}
 
 	protected void addMember_Click() {
+		AddMemberView amv = new AddMemberView(loginUser);
+		amv.setVisible(true);
+		this.dispose();
 	}
 }

@@ -30,3 +30,5 @@ MIULibrarySystem/.settings/org.eclipse.jdt.core.prefs
 MIULibrarySystem/src/dataAccess/storage/BOOKS
 MIULibrarySystem/src/dataAccess/storage/LOGINUSER
 MIULibrarySystem/src/dataAccess/storage/MEMBER
+MIULibrarySystem/src/dataAccess/storage/BOOKS
+MIULibrarySystem/src/dataAccess/storage/LOGINUSER

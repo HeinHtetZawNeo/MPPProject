@@ -20,11 +20,14 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JSeparator;
 
 import model.Book;
+import model.BookCopy;
 import model.CheckoutEntry;
 import model.CheckoutRecord;
 
@@ -36,19 +39,31 @@ public class CheckOutBookView extends JFrame {
 	private JList jlstBooklist;
 	private JButton btnSearchMember;
 	private JLabel lblMemberName;
-	private HashMap<String,Book> bookmap;
+	private HashMap<String, BookCopy> bookCopyList;
 	private LibraryMember member;
 	private LoginUser loginuser;
-	
 
 	/**
 	 * Create the frame.
 	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					CheckOutBookView frame = new CheckOutBookView(null);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
 	public CheckOutBookView(LoginUser loginuser) {
-		
-		this.loginuser=loginuser;
-		this.bookmap = new HashMap<String, Book>();
-		
+
+		this.loginuser = loginuser;
+		this.bookCopyList = new HashMap<String, BookCopy>();
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -120,31 +135,38 @@ public class CheckOutBookView extends JFrame {
 		btnDeleteBook.setEnabled(false);
 		btnDeleteBook.setBounds(290, 127, 139, 29);
 		contentPane.add(btnDeleteBook);
-		
+
 		JLabel lblMemberNameLabel = new JLabel("Member Name");
 		lblMemberNameLabel.setBounds(33, 78, 90, 16);
 		contentPane.add(lblMemberNameLabel);
-		
+
 		lblMemberName = new JLabel("");
 		lblMemberName.setBounds(130, 78, 299, 16);
 		contentPane.add(lblMemberName);
-		
+
 	}
 
 	protected void cancel_Click() {
 		MainMenuView mm = new MainMenuView(this.loginuser);
-		mm.displayMenu();
+		mm.setVisible(true);
 		this.dispose();
 	}
 
 	protected void checkout() {
 		try {
-			if(member==null) throw new LibrarySystemException("Add Library Member");
-			if(bookmap.size()==0) throw new LibrarySystemException("Add at least one Book");
-			
+			if (member == null)
+				throw new LibrarySystemException("Add Library Member");
+			if (bookCopyList.size() == 0)
+				throw new LibrarySystemException("Add at least one Book");
+
 			CheckOutBookController cob = new CheckOutBookController();
-			member = cob.checkOut(member,bookmap);
-			
+
+			List<BookCopy> myBookCopy = new ArrayList<BookCopy>();
+			this.bookCopyList.forEach((x, v) -> {
+				myBookCopy.add(v);
+			});
+			member = cob.checkOut(member, myBookCopy);
+
 			MainMenuView mmv = new MainMenuView(this.loginuser);
 			mmv.setVisible(true);
 			this.dispose();
@@ -169,14 +191,14 @@ public class CheckOutBookView extends JFrame {
 		try {
 			if (txtMemberID.getText().trim().equals(""))
 				throw new LibrarySystemException("Enter Valid Memeber ID");
-			
+
 			CheckOutBookController cob = new CheckOutBookController();
 			member = cob.checkMember(txtMemberID.getText());
-			
+
 			txtMemberID.setEnabled(false);
 			btnSearchMember.setEnabled(false);
-			lblMemberName.setText(member.getFirstName()+" "+member.getLastName());
-			
+			lblMemberName.setText(member.getFirstName() + " " + member.getLastName());
+
 		} catch (LibrarySystemException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 			txtMemberID.setText("");
@@ -189,13 +211,25 @@ public class CheckOutBookView extends JFrame {
 	protected void showBook() {
 		DefaultListModel tempModel = (DefaultListModel) jlstBooklist.getModel();
 		tempModel.clear();
-		this.bookmap.forEach((k,v)->{
-			tempModel.addElement(k +" - " + v.getTitle());
+		
+		this.bookCopyList.forEach((k,v)->{
+			tempModel.addElement(v.getBook().getIsbnNumber() + " - " + v.getBook().getTitle() + "CopyNumber :"
+					+ v.getUniqueCopyNumber());
 		});
-	}
-	
+			
+	};
+
 	public void addBook(Book b) {
-		this.bookmap.put(b.getIsbnNumber(), b);
-		showBook();
+		try {
+			CheckOutBookController cob = new CheckOutBookController();
+			BookCopy bc = cob.isBookAvailable(b);
+			if (bc == null)
+				throw new LibrarySystemException("Book is not available");
+			this.bookCopyList.put(bc.getBook().getIsbnNumber() + bc.getUniqueCopyNumber(), bc);
+			showBook();
+		} catch (LibrarySystemException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		}
+
 	}
 }

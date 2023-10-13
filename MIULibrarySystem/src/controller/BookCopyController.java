@@ -5,10 +5,11 @@ import java.util.HashMap;
 import dataAccess.BookDao;
 import exception.LibrarySystemException;
 import model.Book;
+import model.BookCopy;
 
 public class BookCopyController {
 
-	public void addbookcopy(String isbn, int qty) throws LibrarySystemException {
+	public Book addbookcopy(String isbn, int qty) throws LibrarySystemException {
 //		throw new LibrarySystemException("I am sorry, the book is already available in the collection");
 		
 		BookDao bookdao = new BookDao();
@@ -22,5 +23,6 @@ public class BookCopyController {
 		
 		bookdao.updateBookHashMap(allbooks);
 		
+		return allbooks.get(isbn);
 	}
 }

@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,11 +10,15 @@ import javax.swing.border.EmptyBorder;
 import controller.AddBookController;
 import controller.BookCopyController;
 import exception.LibrarySystemException;
+import model.Book;
+import model.LoginUser;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -22,8 +27,9 @@ public class AddBookCopyView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField BookISBN;
-	private JTextField Quantity;
+	private JTextField txtIsbnNumber;
+	private JTextField txtQty;
+	private LoginUser loginUser;
 
 	/**
 	 * Launch the application.
@@ -32,7 +38,7 @@ public class AddBookCopyView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddBookCopyView frame = new AddBookCopyView();
+					AddBookCopyView frame = new AddBookCopyView(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -44,66 +50,84 @@ public class AddBookCopyView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddBookCopyView() {
+	public AddBookCopyView(LoginUser loginUser) {
+		this.loginUser = loginUser;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 633, 306);
+		setBounds(100, 100, 340, 170);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("Add a Book Copy");
-		lblNewLabel.setBounds(247, 36, 188, 14);
+		JLabel lblNewLabel = new JLabel("Add Book Copy");
+		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD, 16));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(10, 10, 330, 30);
 		contentPane.add(lblNewLabel);
 
-		BookISBN = new JTextField();
-		BookISBN.setBounds(209, 103, 167, 20);
-		contentPane.add(BookISBN);
-		BookISBN.setColumns(10);
+		JLabel lblNewLabel_1 = new JLabel("Book ISBN");
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_1.setBounds(10, 40, 150, 20);
+		contentPane.add(lblNewLabel_1);
 
-		Quantity = new JTextField();
-		Quantity.setBounds(207, 152, 169, 20);
-		contentPane.add(Quantity);
-		Quantity.setColumns(10);
+		JLabel lblNewLabel_2 = new JLabel("Quantity");
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_2.setBounds(10, 70, 150, 20);
+		contentPane.add(lblNewLabel_2);
+
+		txtIsbnNumber = new JTextField();
+		txtIsbnNumber.setBounds(170, 40, 150, 20);
+		contentPane.add(txtIsbnNumber);
+
+		txtQty = new JTextField();
+		txtQty.setBounds(170, 70, 150, 20);
+		contentPane.add(txtQty);
 
 		JButton SaveBookCopy = new JButton("Save");
+		SaveBookCopy.setBounds(30, 100, 100, 20);
+		contentPane.add(SaveBookCopy);
 		SaveBookCopy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				save_Click();
 			}
 		});
-		SaveBookCopy.setBackground(new Color(0, 255, 0));
-		SaveBookCopy.setBounds(186, 206, 89, 23);
-		contentPane.add(SaveBookCopy);
 
-		JLabel lblNewLabel_1 = new JLabel("Book ISBN");
-		lblNewLabel_1.setBounds(105, 106, 76, 14);
-		contentPane.add(lblNewLabel_1);
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.setBounds(200, 100, 100, 20);
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cancel_Click();
+			}
+		});
+		contentPane.add(btnCancel);
+	}
 
-		JLabel lblNewLabel_2 = new JLabel("Quantity");
-		lblNewLabel_2.setBounds(115, 155, 49, 14);
-		contentPane.add(lblNewLabel_2);
-
-		JButton btnNewButton = new JButton("Cancel");
-		btnNewButton.setForeground(new Color(255, 255, 255));
-		btnNewButton.setBackground(new Color(255, 0, 0));
-		btnNewButton.setBounds(289, 206, 109, 23);
-		contentPane.add(btnNewButton);
+	protected void cancel_Click() {
+		MainMenuView mmv = new MainMenuView(this.loginUser);
+		mmv.setVisible(true);
+		this.dispose();
 	}
 
 	protected void save_Click() {
 		try {
-			if (BookISBN.getText().isBlank())
+			if (txtIsbnNumber.getText().isBlank())
 				throw new LibrarySystemException("Enter ISBN Number");
-			if (Quantity.getText().isBlank())
+			if (txtQty.getText().isBlank())
 				throw new LibrarySystemException("Enter Qty");
-			if (!Quantity.getText().matches("-?\\d+(\\.\\d+)?"))
+			if (!txtQty.getText().matches("-?\\d+(\\.\\d+)?"))
 				throw new LibrarySystemException("Enter Valid Qty");
 
 			BookCopyController bookcopy = new BookCopyController();
 
-			bookcopy.addbookcopy(BookISBN.getText(), Integer.parseInt(Quantity.getText()));
+			Book b = bookcopy.addbookcopy(txtIsbnNumber.getText(), Integer.parseInt(txtQty.getText()));
+
+			JOptionPane.showMessageDialog(this,
+					"Now total book copy for " + b.getTitle() + " is " + b.getBookCopyList().size());
+			MainMenuView mmv = new MainMenuView(this.loginUser);
+			mmv.setVisible(true);
+			this.dispose();
+
 		} catch (LibrarySystemException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}

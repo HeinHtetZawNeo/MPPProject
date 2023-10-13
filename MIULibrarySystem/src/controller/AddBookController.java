@@ -2,26 +2,31 @@ package controller;
 
 import java.util.HashMap;
 
+import dataAccess.AuthorDao;
 import dataAccess.BookDao;
 import exception.LibrarySystemException;
+import model.Author;
 import model.Book;
 
 public class AddBookController {
 
-	public void addbook(Book book1) throws LibrarySystemException {
+	public void addbook(Book book) throws LibrarySystemException {
 
 		BookDao bookdao = new BookDao();
 		HashMap<String, Book> allbooks = bookdao.getAllBook();
-		System.out.println(allbooks.size());
-		if (allbooks.get(book1.getIsbnNumber()) != null)
-			throw new LibrarySystemException("I am sorry, the book is already available in the collection");
-		else
-		{	
-			allbooks.put(book1.getIsbnNumber(), book1);
-			bookdao.updateBookHashMap(allbooks);
-		
+		AuthorDao authordao = new AuthorDao();
+		HashMap<String, Author> allAuthor = authordao.getAllAuthor();
+
+		if (allbooks.get(book.getIsbnNumber()) != null)
+			throw new LibrarySystemException("Book is already Existed");
+
+		allbooks.put(book.getIsbnNumber(), book);
+		bookdao.updateBookHashMap(allbooks);
+
+		for(Author a:book.getAuthorList()) {
+			allAuthor.put(a.getFirstName()+" "+a.getLastName(), a);
 		}
-		
+		authordao.updateBookHashMap(allAuthor);
 	}
 
 }

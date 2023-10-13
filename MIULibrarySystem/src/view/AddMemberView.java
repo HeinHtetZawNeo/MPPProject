@@ -35,7 +35,7 @@ public class AddMemberView extends JFrame {
 	private JTextField txtZip;
 	private JButton btnCancel;
 	private JButton btnSave;
-	private LoginUser user;
+	private LoginUser loginUser;
 
 	/**
 	 * Launch the application.
@@ -57,8 +57,8 @@ public class AddMemberView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddMemberView(LoginUser user) {
-		this.user = user;
+	public AddMemberView(LoginUser loginUser) {
+		this.loginUser = loginUser;
 
 		AddMemberController addMembController = new AddMemberController();
 		String membId = addMembController.generateMemberId();
@@ -67,6 +67,7 @@ public class AddMemberView extends JFrame {
 		setBounds(100, 100, 450, 390);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setLocationRelativeTo(null);
 
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
@@ -169,8 +170,7 @@ public class AddMemberView extends JFrame {
 	}
 
 	public void cancel_Click() {
-		MainMenuView mm = new MainMenuView(this.user);
-		mm.displayMenu();
+		MainMenuView mm = new MainMenuView(this.loginUser);
 		this.dispose();
 	}
 
@@ -191,14 +191,13 @@ public class AddMemberView extends JFrame {
 
 			AddMemberController addMemberController = new AddMemberController();
 			Address add = new Address(txtStreet.getText(), txtCity.getText(), txtState.getText(), txtZip.getText());
-			LibraryMember member = new LibraryMember(txtFirstName.getText(), txtLastName.getText(), "", 
-					add, txtMemberID.getText());
-					addMemberController.addMember(member);
-					JOptionPane.showMessageDialog(this, "MEMBER ADDED SUCCESSFULLY");
-					dispose();
-					MainMenuView mmv= new MainMenuView(null);
-					mmv.displayMenu();
-					mmv.setVisible(true);
+			LibraryMember member = new LibraryMember(txtFirstName.getText(), txtLastName.getText(), "", add,
+					txtMemberID.getText());
+			addMemberController.addMember(member);
+			JOptionPane.showMessageDialog(this, "MEMBER ADDED SUCCESSFULLY");
+			dispose();
+			MainMenuView mmv = new MainMenuView(this.loginUser);
+			mmv.setVisible(true);
 		} catch (LibrarySystemException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}

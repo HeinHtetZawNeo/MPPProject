@@ -5,6 +5,10 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.AddBookController;
+import exception.LibrarySystemException;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.DropMode;
@@ -31,26 +35,24 @@ import javax.swing.AbstractListModel;
 import model.Address;
 import model.Author;
 import model.Book;
+import model.LoginUser;
 
 public class AddBookView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField Title;
-	private JLabel lblNewLabel_2;
-	private JTextField ISBN;
 	private JLabel lblNewLabel_3;
-	private JTextField Quantity;
-	private JList Author;
+	private JTextField txtTitle;
+	private JTextField txtISBN;
+	private JTextField txtQuantity;
+	private JList jListAuthor;
+	private JComboBox cmbBorrowDay;
 	private List<Author> authors;
-	private Book book1; //a of books  Hasan
+	private LoginUser loginuser;
+
 	{
 		authors = new ArrayList<Author>();
 	}
-	public void addAuthor(Author a) {
-		authors.add(a);
-	}
-	
 
 	/**
 	 * Launch the application.
@@ -59,8 +61,9 @@ public class AddBookView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddBookView frame = new AddBookView();
+					AddBookView frame = new AddBookView(null);
 					frame.setVisible(true);
+
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -71,160 +74,141 @@ public class AddBookView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddBookView() {
-		setTitle("Add a New Book");
-
-		setFont(new Font("Bodoni MT", Font.PLAIN, 18));
+	public AddBookView(LoginUser loginuser) {
+		this.loginuser = loginuser;
+		setTitle("Add New Book");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 609, 471);
-
-		contentPane = new JPanel();
+		setBounds(100, 100, 640, 375);
 
 		setLocationRelativeTo(null);
-		contentPane.setForeground(new Color(255, 128, 64));
-		contentPane.setToolTipText("Add a New Book");
-		contentPane.setBorder(new EmptyBorder(11, 5, 5, 5));
 
+		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblNewLabel_1 = new JLabel("Title");
-		lblNewLabel_1.setBackground(new Color(0, 0, 255));
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setBounds(93, 70, 49, 14);
-		contentPane.add(lblNewLabel_1);
-
-		JLabel lblNewLabel = new JLabel("Add a Book");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel.setForeground(new Color(0, 0, 0));
-		lblNewLabel.setBounds(165, 16, 122, 14);
+		JLabel lblNewLabel = new JLabel("Add New Book");
+		lblNewLabel.setBounds(220, 10, 200, 20);
+		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD, 16));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		contentPane.add(lblNewLabel);
 
-		Title = new JTextField();
-		Title.setHorizontalAlignment(SwingConstants.LEFT);
-		Title.setBounds(147, 67, 209, 20);
-		Title.setToolTipText("Title");
-		contentPane.add(Title);
-		Title.setColumns(10);
-		
-		JComboBox selectl = new JComboBox();
-		selectl.setBackground(new Color(255, 255, 255));
-		selectl.setModel(new DefaultComboBoxModel(new String[] {"21", "7"}));
-		selectl.setBounds(147, 134, 63, 22);
-		contentPane.add(selectl);
+		JLabel lblNewLabel_1 = new JLabel("Title");
+		lblNewLabel_1.setBounds(10, 40, 200, 20);
+		contentPane.add(lblNewLabel_1);
 
-		lblNewLabel_2 = new JLabel("ISBN");
-		lblNewLabel_2.setBounds(103, 101, 49, 14);
+		JLabel lblNewLabel_2 = new JLabel("ISBN Number");
+		lblNewLabel_2.setBounds(10, 70, 200, 20);
 		contentPane.add(lblNewLabel_2);
 
-		ISBN = new JTextField();
-		ISBN.setToolTipText("ISBN");
-		ISBN.setBounds(147, 95, 209, 20);
-		contentPane.add(ISBN);
-		ISBN.setColumns(10);
-
-		lblNewLabel_3 = new JLabel("#OfBorrowDays");
-		lblNewLabel_3.setBounds(44, 138, 96, 14);
+		lblNewLabel_3 = new JLabel("No Of Borrow Days");
+		lblNewLabel_3.setBounds(10, 100, 200, 20);
 		contentPane.add(lblNewLabel_3);
 
-		Quantity = new JTextField();
-		Quantity.setToolTipText("Quantity");
-		Quantity.setBounds(147, 163, 209, 20);
-		contentPane.add(Quantity);
-		Quantity.setColumns(10);
-
 		JLabel lblNewLabel_4 = new JLabel("Quantity");
-		lblNewLabel_4.setBounds(77, 166, 49, 14);
+		lblNewLabel_4.setBounds(10, 130, 200, 20);
 		contentPane.add(lblNewLabel_4);
 
-		Author = new JList(new DefaultListModel<String>());
-		/*
-		 * Author.setModel(new AbstractListModel() {
-		 * 
-		 * String[] values = new String[] {};
-		 * 
-		 * public int getSize() { return values.length; }
-		 * 
-		 * public Object getElementAt(int index) { return values[index]; } });
-		 */
-		Author.setToolTipText("Author");
-		Author.setBounds(147, 207, 233, 74);
-		contentPane.add(Author);
-
 		JLabel lblNewLabel_5 = new JLabel("Author");
-		lblNewLabel_5.setBounds(77, 241, 49, 14);
+		lblNewLabel_5.setBounds(10, 160, 200, 20);
 		contentPane.add(lblNewLabel_5);
 
+		txtTitle = new JTextField();
+		txtTitle.setBounds(220, 40, 300, 20);
+		contentPane.add(txtTitle);
+
+		txtISBN = new JTextField();
+		txtISBN.setBounds(220, 70, 300, 20);
+		contentPane.add(txtISBN);
+
+		cmbBorrowDay = new JComboBox();
+		cmbBorrowDay.setModel(new DefaultComboBoxModel(new String[] { "21", "7" }));
+		cmbBorrowDay.setBounds(220, 100, 300, 20);
+		contentPane.add(cmbBorrowDay);
+
+		txtQuantity = new JTextField();
+		txtQuantity.setBounds(220, 130, 300, 20);
+		contentPane.add(txtQuantity);
+
+		jListAuthor = new JList(new DefaultListModel<String>());
+		jListAuthor.setBounds(220, 160, 300, 150);
+		contentPane.add(jListAuthor);
+
 		JButton AddAuthor = new JButton("Add Author");
+		AddAuthor.setBounds(530, 160, 100, 20);
 		AddAuthor.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AddAuthor();
+				AddAuthor_Click();
 			}
 		});
-		AddAuthor.setBackground(new Color(64, 128, 128));
-		AddAuthor.setForeground(new Color(0, 0, 0));
-		AddAuthor.setBounds(378, 181, 111, 23);
 		contentPane.add(AddAuthor);
 
 		JButton Save = new JButton("Save");
+		Save.setBounds(150, 320, 100, 20);
 		Save.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-		if(Title.getText().isEmpty() || ISBN.getText().isEmpty() || authors.isEmpty()  )
-			JOptionPane.showMessageDialog(null, "All Fields are Reuqired Please...", "alert", JOptionPane.ERROR_MESSAGE);
-		else
-		{
-				
-			 book1 = new Book(Integer.valueOf( (String) selectl.getSelectedItem()),Title.getText(),ISBN.getText(),authors, Integer.valueOf(Quantity.getText()));
-				
-			 System.out.print(book1.toString());
-			
-			dispose();
-		}
-			//	abv.setVisible(true);
+				save_Click();
 			}
 		});
-		Save.setForeground(new Color(0, 128, 0));
-		Save.setToolTipText("Save");
-		Save.setBounds(121, 309, 89, 23);
 		contentPane.add(Save);
 
 		JButton Cancel = new JButton("Cancel");
+		Cancel.setBounds(350, 320, 100, 20);
 		Cancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				contentPane.setVisible(false);
-				System.exit(0);
+				cancel_Click();
 			}
 		});
-		Cancel.setForeground(new Color(255, 0, 0));
-		Cancel.setBounds(307, 309, 89, 23);
 		contentPane.add(Cancel);
-		
-		
+
 	}
 
-	protected void ShowAuthors()
-	{
-		DefaultListModel tempModel = (DefaultListModel)Author.getModel();
-		tempModel.clear();
-		for(Author a: authors) {
-			System.out.println(a.getFirstName());
-			System.out.println(a.getLastName());
-			System.out.println(a.getPhoneNumber());
-			System.out.println( "Expert= "+ a.isCredentials());
-			System.out.println("==");
-			tempModel.addElement(a.getFirstName()+" "+a.getLastName());
+	protected void save_Click() {
+		try {
+			if (txtTitle.getText().isBlank())
+				throw new LibrarySystemException("Enter Title");
+			if (txtISBN.getText().isBlank())
+				throw new LibrarySystemException("Enter ISBN Number");
+			if (authors.size() == 0)
+				throw new LibrarySystemException("Add at least one author");
+			if (txtQuantity.getText().isBlank())
+				throw new LibrarySystemException("Enter Quantity");
+			if (!txtQuantity.getText().matches("-?\\d+(\\.\\d+)?"))
+				throw new LibrarySystemException("Enter Quantity with valid input");
+
+			Book book = new Book(Integer.parseInt(cmbBorrowDay.getSelectedItem() + ""), txtTitle.getText(),
+					txtISBN.getText(), authors, Integer.parseInt(txtQuantity.getText()));
+
+			AddBookController abc = new AddBookController();
+			abc.addbook(book);
+		} catch (LibrarySystemException e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
-		
-				//tempModel.addElement(a.getFirstName()+" "+a.getLastName());
+
 	}
 
-	protected void AddAuthor() {
+	protected void cancel_Click() {
+		MainMenuView mmv = new MainMenuView(this.loginuser);
+		mmv.setVisible(true);
+		this.dispose();
+	}
+
+	protected void ShowAuthors() {
+		DefaultListModel tempModel = (DefaultListModel) jListAuthor.getModel();
+		tempModel.clear();
+		for (Author a : authors) {
+			tempModel.addElement(a.getFirstName() + " " + a.getLastName());
+		}
+	}
+
+	protected void AddAuthor_Click() {
 		AddAuthorView addAuthor = new AddAuthorView(this);
 		addAuthor.setVisible(true);
-		
-		//AddAuthorView autherob1= new AddAuthorView();
-		
-		//DefaultListModel tempModel = (DefaultListModel) Author.getModel();
-		//tempModel.addElement("Hello 1");
+		this.setVisible(false);
+	}
+
+	public void addAuthor(Author a) {
+		authors.add(a);
 	}
 }
