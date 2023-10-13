@@ -14,6 +14,8 @@ public class MainMenuView extends JFrame {
 	private JButton addBookButton;
 	private JButton addBookCopyButton;
 	private JButton logoutButton;
+	private JButton showAllBookButton;
+	private JButton showAllMemberButton;
 	private LoginUser loginUser;
 
 	public MainMenuView(LoginUser loginUser) {
@@ -27,11 +29,13 @@ public class MainMenuView extends JFrame {
 		panel.setLayout(new GridLayout(3, 2, 10, 10)); // 3 rows, 2 columns with 10-pixel gaps
 		// Create buttons
 
-		addMemberButton = new JButton("ADD MEMBER");
-		checkOutButton = new JButton("CHECK OUT BOOK");
-		addBookButton = new JButton("ADD BOOK");
-		addBookCopyButton = new JButton("ADD BOOK COPY");
+		addMemberButton = new JButton("Add Member");
+		checkOutButton = new JButton("Check Out Book");
+		addBookButton = new JButton("Add Book");
+		addBookCopyButton = new JButton("Add Book Copy");
 		logoutButton = new JButton("Log Out");
+		showAllBookButton = new JButton("Show All Book");
+		showAllMemberButton = new JButton("Show All Member");
 		displayButtonsWithRole();
 		// Add action listeners to the buttons
 		addMemberButton.addActionListener(new ActionListener() {
@@ -78,11 +82,27 @@ public class MainMenuView extends JFrame {
 			}
 		});
 
+		showAllBookButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showAllBookButton_Click();
+			}
+		});
+		showAllMemberButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showAllMemberButton_Click();
+			}
+		});
 		// Add buttons to the panel
 		panel.add(addMemberButton);
 		panel.add(checkOutButton);
 		panel.add(addBookButton);
 		panel.add(addBookCopyButton);
+		panel.add(showAllBookButton);
+		panel.add(showAllMemberButton);
 		setVisible(true);
 		// Create another panel for the Log Out button
 		JPanel logoutPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -93,27 +113,31 @@ public class MainMenuView extends JFrame {
 		add(logoutPanel, BorderLayout.SOUTH);
 	}
 
+	protected void showAllMemberButton_Click() {
+		ShowAllMemberView sam = new ShowAllMemberView(loginUser);
+		sam.setVisible(true);
+		this.dispose();
+	}
+
+	protected void showAllBookButton_Click() {
+		ShowAllBookView sab = new ShowAllBookView(loginUser);
+		sab.setVisible(true);
+		this.dispose();
+	}
+
 	private void displayButtonsWithRole() {
 		if (this.loginUser instanceof SuperUser) {
 		} else if (loginUser instanceof Admin) {
 			checkOutButton.setEnabled(false);
-			checkOutButton.setBackground(Color.LIGHT_GRAY);
 		} else if (this.loginUser instanceof Librarian) {
 			addMemberButton.setEnabled(false);
-			addMemberButton.setBackground(Color.LIGHT_GRAY);
 			addBookButton.setEnabled(false);
-			addBookButton.setBackground(Color.LIGHT_GRAY);
 			addBookCopyButton.setEnabled(false);
-			addBookCopyButton.setBackground(Color.LIGHT_GRAY);
 		} else {
 			checkOutButton.setEnabled(false);
-			checkOutButton.setBackground(Color.LIGHT_GRAY);
 			addMemberButton.setEnabled(false);
-			addMemberButton.setBackground(Color.LIGHT_GRAY);
 			addBookButton.setEnabled(false);
-			addBookButton.setBackground(Color.LIGHT_GRAY);
 			addBookCopyButton.setEnabled(false);
-			addBookCopyButton.setBackground(Color.LIGHT_GRAY);
 		}
 	}
 
