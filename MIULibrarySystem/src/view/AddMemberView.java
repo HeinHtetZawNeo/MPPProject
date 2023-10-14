@@ -205,6 +205,8 @@ public class AddMemberView extends JFrame {
 				throw new LibrarySystemException("Enter State");
 			if (txtZip.getText().isBlank())
 				throw new LibrarySystemException("Enter Zip");
+			if(!Helper.isNumber(txtZip.getText()))
+				throw new LibrarySystemException("Enter Valid Zip");
 
 			AddMemberController addMemberController = new AddMemberController();
 			Address add = new Address(txtStreet.getText(), txtCity.getText(), txtState.getText(), txtZip.getText());
