@@ -180,8 +180,8 @@ public class AddBookView extends JFrame {
 			if (authors.size() == 0)
 				throw new LibrarySystemException("Add at least one author");
 
-			Book book = new Book(Integer.parseInt(cmbBorrowDay.getSelectedItem() + ""), txtTitle.getText(),
-					txtISBN.getText(), authors, Integer.parseInt(txtQuantity.getText()));
+			Book book = new Book(Integer.parseInt(cmbBorrowDay.getSelectedItem() + ""), txtTitle.getText().trim(),
+					txtISBN.getText().trim(), authors, Integer.parseInt(txtQuantity.getText()));
 
 			AddBookController abc = new AddBookController();
 			abc.addbook(book);
