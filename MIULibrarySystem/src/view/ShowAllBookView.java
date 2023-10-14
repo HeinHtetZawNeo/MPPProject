@@ -50,7 +50,7 @@ public class ShowAllBookView extends JFrame {
 	public ShowAllBookView(LoginUser loginUser) {
 		this.loginUser = loginUser;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 469, 420);
+		setBounds(100, 100, 600, 420);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
@@ -62,7 +62,7 @@ public class ShowAllBookView extends JFrame {
 		JLabel lblNewLabel = new JLabel("Books");
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD, 16));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(10, 10, 453, 30);
+		lblNewLabel.setBounds(10, 10, 580, 30);
 		contentPane.add(lblNewLabel);
 
 		String[] columnNames = { "ISBN", "Title", "No Of Copy", "Available","In Circulation" };
@@ -83,7 +83,7 @@ public class ShowAllBookView extends JFrame {
 
 		JScrollPane sp = new JScrollPane(bookTable);
 		sp.setLocation(10, 40);
-		sp.setSize(453, 309);
+		sp.setSize(580, 309);
 		contentPane.add(sp);
 
 		JButton btnOK = new JButton("OK");

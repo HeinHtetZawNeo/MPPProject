@@ -6,11 +6,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import model.Author;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import javax.swing.JTextPane;
 
 public class AuthorDetailView extends JFrame {
 
@@ -37,7 +39,7 @@ public class AuthorDetailView extends JFrame {
 	private JLabel lblNewLabel_1;
 	private JLabel lblCredentialExpert;
 	private JLabel lblNewLabel_11;
-	private JLabel lblShortBio;
+	private JTextPane tpShortBio;
 
 	/**
 	 * Create the frame.
@@ -46,7 +48,7 @@ public class AuthorDetailView extends JFrame {
 		this.previousFrame = previousFrame;
 		this.author = author;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 423, 583);
+		setBounds(100, 100, 423, 614);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -123,7 +125,7 @@ public class AuthorDetailView extends JFrame {
 		contentPane.add(lblZip);
 
 		btnOK = new JButton("OK");
-		btnOK.setBounds(120, 520, 150, 30);
+		btnOK.setBounds(120, 550, 150, 30);
 		btnOK.addActionListener(new ActionListener() {
 
 			@Override
@@ -132,24 +134,29 @@ public class AuthorDetailView extends JFrame {
 			}
 		});
 		contentPane.add(btnOK);
-		
+
 		lblNewLabel_1 = new JLabel("Credential Expert");
 		lblNewLabel_1.setBounds(10, 310, 150, 20);
 		contentPane.add(lblNewLabel_1);
-		
+
 		lblCredentialExpert = new JLabel("");
 		lblCredentialExpert.setBounds(170, 310, 150, 20);
 		contentPane.add(lblCredentialExpert);
-		
+
 		lblNewLabel_11 = new JLabel("Short Bio");
 		lblNewLabel_11.setBounds(10, 340, 150, 20);
 		contentPane.add(lblNewLabel_11);
-		
-		lblShortBio = new JLabel("");
-		lblShortBio.setVerticalAlignment(SwingConstants.TOP);
-		lblShortBio.setBounds(170, 340, 150, 100);
-		contentPane.add(lblShortBio);
 
+		tpShortBio = new JTextPane();
+		tpShortBio.setEnabled(false);
+		tpShortBio.setEditable(false);
+		tpShortBio.setBounds(170, 340, 240, 200);
+		contentPane.add(tpShortBio);
+
+		JScrollPane sp = new JScrollPane(tpShortBio);
+		sp.setLocation(170, 340);
+		sp.setSize(240, 200);
+		contentPane.add(sp);
 		loadData();
 	}
 
@@ -167,10 +174,10 @@ public class AuthorDetailView extends JFrame {
 		lblCity.setText(author.getAddress().getCity());
 		lblState.setText(author.getAddress().getState());
 		lblZip.setText(author.getAddress().getZip());
-		if(author.isCredentials())
+		if (author.isCredentials())
 			lblCredentialExpert.setText("Yes");
 		else
 			lblCredentialExpert.setText("No");
-		lblShortBio.setText(author.getShortBio());
+		tpShortBio.setText(author.getShortBio());
 	}
 }
