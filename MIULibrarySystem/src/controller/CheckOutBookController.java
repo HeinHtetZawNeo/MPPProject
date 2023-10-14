@@ -46,7 +46,7 @@ public class CheckOutBookController {
 			if (b.getTitle().equals(title))
 				return b;
 		}
-		throw new LibrarySystemException("ISBN not found");
+		throw new LibrarySystemException("Title not found");
 	}
 
 	public LibraryMember checkOut(LibraryMember member, List<BookCopy> bookCopyList) throws LibrarySystemException {

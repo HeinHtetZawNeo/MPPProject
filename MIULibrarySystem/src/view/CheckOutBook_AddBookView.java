@@ -161,7 +161,8 @@ public class CheckOutBook_AddBookView extends JFrame {
 			if((!txtIsbnNumber.getText().isBlank())&&!Helper.isISBNNumber(txtIsbnNumber.getText()))
 				throw new LibrarySystemException("Enter Valid ISBN number");
 			CheckOutBookController cob = new CheckOutBookController();
-			if (!txtIsbnNumber.getText().trim().equals(""))
+
+			if (!txtIsbnNumber.getText().isBlank())
 				b = cob.searchBookByIsbn(txtIsbnNumber.getText());
 			else
 				b = cob.searchBookByTitle(txtTitle.getText());

@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import controller.CheckOutBookController;
 import exception.LibrarySystemException;
@@ -42,6 +44,7 @@ public class CheckOutBookView extends JFrame {
 	private HashMap<String, BookCopy> bookCopyList;
 	private LibraryMember member;
 	private LoginUser loginuser;
+	private JButton btnDeleteBook;
 
 	/**
 	 * Create the frame.
@@ -99,8 +102,15 @@ public class CheckOutBookView extends JFrame {
 
 		jlstBooklist = new JList(new DefaultListModel<String>());
 		jlstBooklist.setBounds(33, 104, 252, 119);
+		jlstBooklist.addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				btnDeleteBook.setEnabled(true);
+			}
+		});
 		contentPane.add(jlstBooklist);
-
+		
 		JButton btnAddBook = new JButton("Add Book");
 		btnAddBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -132,9 +142,14 @@ public class CheckOutBookView extends JFrame {
 		separator.setBounds(0, 228, 456, 12);
 		contentPane.add(separator);
 
-		JButton btnDeleteBook = new JButton("Delete Book");
-		btnDeleteBook.setEnabled(false);
+		btnDeleteBook = new JButton("Delete Book");
 		btnDeleteBook.setBounds(290, 127, 139, 29);
+		btnDeleteBook.setEnabled(false);
+		btnDeleteBook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnDeleteBook_Click();
+			}
+		});
 		contentPane.add(btnDeleteBook);
 
 		JLabel lblMemberNameLabel = new JLabel("Member Name");
@@ -145,6 +160,18 @@ public class CheckOutBookView extends JFrame {
 		lblMemberName.setBounds(130, 78, 299, 16);
 		contentPane.add(lblMemberName);
 
+	}
+
+	protected void btnDeleteBook_Click() {
+		String selectedValue = jlstBooklist.getSelectedValue()+"";
+		String isbn = selectedValue.substring(0, selectedValue.indexOf('~')).trim();
+		BookCopy b = this.bookCopyList.get(isbn.trim());
+		
+		int option = JOptionPane.showConfirmDialog(this, "Delete "+b.getBook().getTitle()+"?");
+		if(option==0) {
+			this.bookCopyList.remove(isbn);
+			showBook();
+		}
 	}
 
 	protected void cancel_Click() {
@@ -213,12 +240,15 @@ public class CheckOutBookView extends JFrame {
 	protected void showBook() {
 		DefaultListModel tempModel = (DefaultListModel) jlstBooklist.getModel();
 		tempModel.clear();
-		
-		this.bookCopyList.forEach((k,v)->{
-			tempModel.addElement(v.getBook().getIsbnNumber() + " - " + v.getBook().getTitle() + "CopyNumber :"
-					+ v.getUniqueCopyNumber());
-		});
-			
+
+		if(this.bookCopyList.isEmpty()) {
+			btnDeleteBook.setEnabled(false);
+		}else {
+			this.bookCopyList.forEach((k, v) -> {
+				tempModel.addElement(v.getBook().getIsbnNumber() + " ~ " + v.getBook().getTitle() + "CopyNumber :"
+						+ v.getUniqueCopyNumber());
+			});			
+		}
 	};
 
 	public void addBook(Book b) {
@@ -227,7 +257,7 @@ public class CheckOutBookView extends JFrame {
 			BookCopy bc = cob.isBookAvailable(b);
 			if (bc == null)
 				throw new LibrarySystemException("Book is not available");
-			this.bookCopyList.put(bc.getBook().getIsbnNumber() + bc.getUniqueCopyNumber(), bc);
+			this.bookCopyList.put(bc.getBook().getIsbnNumber(), bc);
 			showBook();
 		} catch (LibrarySystemException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
