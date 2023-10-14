@@ -23,7 +23,7 @@ import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-public class MemberHistoryView extends JFrame {
+public class LibraryMemberDetailsView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -56,7 +56,7 @@ public class MemberHistoryView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					MemberHistoryView frame = new MemberHistoryView(null, "10001");
+					LibraryMemberDetailsView frame = new LibraryMemberDetailsView(null, "10001");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -68,7 +68,7 @@ public class MemberHistoryView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MemberHistoryView(JFrame previousFrame, String memberID) {
+	public LibraryMemberDetailsView(JFrame previousFrame, String memberID) {
 		this.previousFrame = previousFrame;
 		this.memberID = memberID;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -128,7 +128,7 @@ public class MemberHistoryView extends JFrame {
 		lblNewLabel_9.setBounds(10, 280, 150, 20);
 		contentPane.add(lblNewLabel_9);
 
-		String[] column = { "Check Out Date", "Total Fine", "Total Paid", "Total Check Out Entries" };
+		String[] column = { "Check Out Date", "Total Fine", "Total Paid", "Total Check Out Entries","Total OverDue" };
 		data = showCheckoutRecordData();
 		jtbMemberHistory = new JTable(data, column);
 		jtbMemberHistory.setBounds(10, 310, 400, 200);
