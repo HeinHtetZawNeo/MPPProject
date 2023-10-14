@@ -68,7 +68,7 @@ public class CheckOutBookView extends JFrame {
 		this.bookCopyList = new HashMap<String, BookCopy>();
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 670, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -83,11 +83,11 @@ public class CheckOutBookView extends JFrame {
 		contentPane.add(lblCheckOutBook);
 
 		JLabel lblMemberId = new JLabel("Member ID");
-		lblMemberId.setBounds(33, 50, 119, 16);
+		lblMemberId.setBounds(118, 50, 119, 16);
 		contentPane.add(lblMemberId);
 
 		txtMemberID = new JTextField();
-		txtMemberID.setBounds(120, 45, 165, 26);
+		txtMemberID.setBounds(248, 45, 222, 26);
 		contentPane.add(txtMemberID);
 		txtMemberID.setColumns(10);
 
@@ -97,11 +97,11 @@ public class CheckOutBookView extends JFrame {
 				checkMember();
 			}
 		});
-		btnSearchMember.setBounds(290, 45, 139, 29);
+		btnSearchMember.setBounds(499, 45, 139, 29);
 		contentPane.add(btnSearchMember);
 
 		jlstBooklist = new JList(new DefaultListModel<String>());
-		jlstBooklist.setBounds(33, 104, 252, 119);
+		jlstBooklist.setBounds(33, 104, 461, 119);
 		jlstBooklist.addListSelectionListener(new ListSelectionListener() {
 			
 			@Override
@@ -117,7 +117,7 @@ public class CheckOutBookView extends JFrame {
 				btnAddBook_click();
 			}
 		});
-		btnAddBook.setBounds(290, 99, 139, 29);
+		btnAddBook.setBounds(502, 98, 139, 29);
 		contentPane.add(btnAddBook);
 
 		JButton btnCheckOut = new JButton("CheckOut");
@@ -126,7 +126,7 @@ public class CheckOutBookView extends JFrame {
 				checkout();
 			}
 		});
-		btnCheckOut.setBounds(33, 237, 134, 29);
+		btnCheckOut.setBounds(124, 237, 134, 29);
 		contentPane.add(btnCheckOut);
 
 		JButton btnCancel = new JButton("Cancel");
@@ -135,15 +135,15 @@ public class CheckOutBookView extends JFrame {
 				cancel_Click();
 			}
 		});
-		btnCancel.setBounds(295, 237, 134, 29);
+		btnCancel.setBounds(406, 237, 134, 29);
 		contentPane.add(btnCancel);
 
 		JSeparator separator = new JSeparator();
-		separator.setBounds(0, 228, 456, 12);
+		separator.setBounds(0, 228, 658, 12);
 		contentPane.add(separator);
 
 		btnDeleteBook = new JButton("Delete Book");
-		btnDeleteBook.setBounds(290, 127, 139, 29);
+		btnDeleteBook.setBounds(499, 133, 139, 29);
 		btnDeleteBook.setEnabled(false);
 		btnDeleteBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
