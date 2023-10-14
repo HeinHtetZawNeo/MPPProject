@@ -1,12 +1,16 @@
 package controller;
 
+import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import dataAccess.BookDao;
 import dataAccess.LibraryMemberDao;
+import helper.Helper;
 import model.Book;
 import model.BookCopy;
+import model.CheckoutEntry;
 import model.CheckoutRecord;
 import model.LibraryMember;
 
@@ -22,20 +26,20 @@ public class ShowAllController {
 			result[i][0] = e.getValue().getIsbnNumber();
 			result[i][1] = e.getValue().getTitle();
 			result[i][2] = e.getValue().getBookCopyList().size() + "";
-			result[i][3] = isAvailable(e.getValue(),"Available");
-			result[i][4] = isAvailable(e.getValue(),"NotAvailable");
+			result[i][3] = isAvailable(e.getValue(), "Available");
+			result[i][4] = isAvailable(e.getValue(), "NotAvailable");
 			i++;
 		}
 
 		return result;
 	}
 
-	public String isAvailable(Book book,String type) {
+	public String isAvailable(Book book, String type) {
 		int result = 0;
 		for (BookCopy bc : book.getBookCopyList()) {
-			if (bc.isAvailability()&&type.equals("Available"))
+			if (bc.isAvailability() && type.equals("Available"))
 				result++;
-			else if ((!bc.isAvailability())&&type.equals("NotAvailable"))
+			else if ((!bc.isAvailability()) && type.equals("NotAvailable"))
 				result++;
 		}
 
@@ -46,11 +50,11 @@ public class ShowAllController {
 		LibraryMemberDao lmdao = new LibraryMemberDao();
 		HashMap<String, LibraryMember> allMember = lmdao.getAllLibraryMembers();
 
-		String[][] result = new String[allMember.size()][7];
+		String[][] result = new String[allMember.size()][8];
 		int i = 0;
 		for (Map.Entry<String, LibraryMember> e : allMember.entrySet()) {
 			result[i][0] = e.getValue().getMemberNumber();
-			result[i][1] = e.getValue().getFirstName() +" "+ e.getValue().getLastName();
+			result[i][1] = e.getValue().getFirstName() + " " + e.getValue().getLastName();
 			result[i][2] = e.getValue().getPhoneNumber();
 			result[i][3] = e.getValue().getAddress().getStreet();
 			result[i][4] = e.getValue().getAddress().getCity();
@@ -73,25 +77,36 @@ public class ShowAllController {
 		HashMap<String, LibraryMember> allMember = lmdao.getAllLibraryMembers();
 
 		LibraryMember member = allMember.get(memberID);
-		String[][] result = new String[member.getCheckoutRecord().size()][4];
+		String[][] result = new String[member.getCheckoutRecord().size()][5];
 		int i = 0;
 		for (CheckoutRecord cr : member.getCheckoutRecord()) {
 			result[i][0] = cr.getCheckoutEntries().get(0).getCheckOutDate().toString();
-			result[i][1] = cr.getTotalFine()+"";
-			if(cr.getDatePaid()==null)
+			result[i][1] = cr.getTotalFine() + "";
+			if (cr.getDatePaid() == null)
 				result[i][2] = "N/A";
 			else
-				result[i][2] = cr.getDatePaid()+"";
-			result[i][3] = cr.getCheckoutEntries().size()+"";
+				result[i][2] = cr.getDatePaid() + "";
+			result[i][3] = cr.getCheckoutEntries().size() + "";
+			result[i][4] = countOverDue(cr.getCheckoutEntries()) + "";
 			i++;
 		}
 
 		return result;
 	}
 
+	private int countOverDue(List<CheckoutEntry> checkoutEntries) {
+		int result = 0;
+		for(CheckoutEntry ce:checkoutEntries) {
+			if(Helper.dateDifferent(LocalDate.now(),ce.getDueDate() )<0) {
+				result++;
+			}
+		}
+		return result;
+	}
+
 	public Book getBook(String isbn) {
 		BookDao bookdao = new BookDao();
-		
+
 		return bookdao.getAllBook().get(isbn);
 	}
 

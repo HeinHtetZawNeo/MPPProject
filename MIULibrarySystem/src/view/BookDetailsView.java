@@ -4,19 +4,24 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import controller.ShowAllController;
 import exception.LibrarySystemException;
+import model.Author;
 import model.Book;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import javax.swing.JTable;
 
 public class BookDetailsView extends JFrame {
 
@@ -36,6 +41,12 @@ public class BookDetailsView extends JFrame {
 	private JLabel lblAvailable;
 	private JLabel lblNewLabel_6;
 	private JLabel lblInCirculation;
+	private int y=190;
+	private int x=170;
+	private JLabel lblNewLabel_7;
+	private JTable authorTable;
+	private String[][] data;
+	private Book b;
 
 	/**
 	 * Launch the application.
@@ -59,8 +70,10 @@ public class BookDetailsView extends JFrame {
 	public BookDetailsView(JFrame previousFrame, String isbn) {
 		this.previousFrame = previousFrame;
 		this.isbn = isbn;
+		ShowAllController sac = new ShowAllController();
+		this.b = sac.getBook(this.isbn);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 423, 583);
+		setBounds(100, 100, 423, 537);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -109,7 +122,7 @@ public class BookDetailsView extends JFrame {
 		contentPane.add(lblQty);
 
 		btnOK = new JButton("OK");
-		btnOK.setBounds(120, 520, 150, 30);
+		btnOK.setBounds(120, 460, 150, 30);
 		btnOK.addActionListener(new ActionListener() {
 
 			@Override
@@ -132,25 +145,67 @@ public class BookDetailsView extends JFrame {
 		contentPane.add(lblNewLabel_6);
 		
 		lblInCirculation = new JLabel("");
-		lblInCirculation.setBounds(170, 190, 150, 20);
+		lblInCirculation.setBounds(x, y, 150, 20);
 		contentPane.add(lblInCirculation);
+		
+		lblNewLabel_7 = new JLabel("Authors");
+		lblNewLabel_7.setBounds(10, 220, 150, 20);
+		contentPane.add(lblNewLabel_7);
+		
+		String[] columnNames = { "First Name", "Last Name", "Credential Expert"};
+		data = showAuthorData();
+		authorTable = new JTable(data, columnNames);
+		// make jtable not to editable
+		authorTable.setDefaultEditor(Object.class, null);
+		authorTable.setAutoCreateRowSorter(true);
+		authorTable.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					JTable target = (JTable) e.getSource();
+					jtableClick(target.getSelectedRow());
+				}
+			}
+		});
+		authorTable.setBounds(10, 30, 450, 300);
+
+		JScrollPane sp = new JScrollPane(authorTable);
+		sp.setLocation(10, 250);
+		sp.setSize(400, 200);
+		contentPane.add(sp);
 
 		loadData();
+	}
+
+	private String[][] showAuthorData() {
+		String[][] result = new String[b.getAuthorList().size()][3];
+		int i=0;
+		for(Author a: b.getAuthorList()) {
+			result[i][0]=a.getFirstName();
+			result[i][1]=a.getLastName();
+			if(a.isCredentials())
+				result[i][2]="Yes";
+			else
+				result[i][2]="No";
+		}
+		return result;
+	}
+
+	protected void jtableClick(int selectedRow) {
+		AuthorDetailView adv = new AuthorDetailView(this, b.getAuthorList().get(selectedRow));
+		adv.setVisible(true);
+		this.setVisible(false);
 	}
 
 	protected void btnOK_click() {
 		previousFrame.setVisible(true);
 		this.dispose();
-		;
 	}
 
 	private void loadData() {
 		try {
-			ShowAllController sac = new ShowAllController();
-			Book b = sac.getBook(this.isbn);
 			if (b == null)
 				throw new LibrarySystemException("Something went wrong");
-
+			ShowAllController sac = new ShowAllController();
 			lblTitle.setText(b.getTitle());
 			lblIsbn.setText(b.getIsbnNumber());
 			lblBorrowDay.setText(b.getBorrowDay() + "");
@@ -161,6 +216,5 @@ public class BookDetailsView extends JFrame {
 		} catch (LibrarySystemException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
-
 	}
 }

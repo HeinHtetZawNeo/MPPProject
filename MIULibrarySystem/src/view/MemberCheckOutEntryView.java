@@ -27,16 +27,16 @@ public class MemberCheckOutEntryView extends JFrame {
 	private CheckoutRecord checkoutRecord;
 	private JTable jtbRecordDetail;
 	private String[][] data;
-	private MemberHistoryView memberHistoryView;
+	private LibraryMemberDetailsView memberHistoryView;
 
 	/**
 	 * Create the frame.
 	 */
-	public MemberCheckOutEntryView(MemberHistoryView memberHistoryView, CheckoutRecord checkoutRecord) {
+	public MemberCheckOutEntryView(LibraryMemberDetailsView memberHistoryView, CheckoutRecord checkoutRecord) {
 		this.memberHistoryView = memberHistoryView;
 		this.checkoutRecord = checkoutRecord;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 423, 320);
+		setBounds(100, 100, 566, 320);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -58,13 +58,13 @@ public class MemberCheckOutEntryView extends JFrame {
 
 		JScrollPane sp = new JScrollPane(jtbRecordDetail);
 		sp.setLocation(10, 40);
-		sp.setSize(400, 200);
+		sp.setSize(550, 200);
 		contentPane.add(sp);
 
 		JLabel lblNewLabel = new JLabel("Checkout Record Details");
 		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD, 16));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(10, 10, 400, 20);
+		lblNewLabel.setBounds(10, 10, 550, 20);
 		contentPane.add(lblNewLabel);
 		
 		JButton btnOk = new JButton("OK");
@@ -73,7 +73,7 @@ public class MemberCheckOutEntryView extends JFrame {
 				btnOK_click();
 			}
 		});
-		btnOk.setBounds(150, 250, 117, 29);
+		btnOk.setBounds(237, 252, 117, 29);
 		contentPane.add(btnOk);
 	}
 
