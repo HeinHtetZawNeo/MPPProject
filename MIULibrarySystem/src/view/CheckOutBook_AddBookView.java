@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 
 import controller.CheckOutBookController;
 import exception.LibrarySystemException;
+import helper.Helper;
 import model.Author;
 import model.Book;
 
@@ -31,7 +32,6 @@ public class CheckOutBook_AddBookView extends JFrame {
 	private JLabel lblBookISBNNumberValue;
 	private JLabel lblBookAuthorValue;
 	private Book b;
-
 	/**
 	 * Create the frame.
 	 */
@@ -158,6 +158,8 @@ public class CheckOutBook_AddBookView extends JFrame {
 			if (txtIsbnNumber.getText().trim().equals("") && txtTitle.getText().trim().equals("")) {
 				throw new LibrarySystemException("Add ISBN number or Title to search");
 			}
+			if((!txtIsbnNumber.getText().isBlank())&&!Helper.isISBNNumber(txtIsbnNumber.getText()))
+				throw new LibrarySystemException("Enter Valid ISBN number");
 			CheckOutBookController cob = new CheckOutBookController();
 			if (!txtIsbnNumber.getText().trim().equals(""))
 				b = cob.searchBookByIsbn(txtIsbnNumber.getText());

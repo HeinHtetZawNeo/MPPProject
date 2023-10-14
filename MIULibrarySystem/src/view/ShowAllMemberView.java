@@ -103,7 +103,7 @@ public class ShowAllMemberView extends JFrame {
 
 	protected void jtableClick(int rowNumber) {
 		this.setVisible(false);
-		LibraryMemberDetailsView mhv = new LibraryMemberDetailsView(this, data[rowNumber][0]);
+		LibraryMemberDetailsView mhv = new LibraryMemberDetailsView(this, data[rowNumber][0],loginUser);
 		mhv.setVisible(true);
 	}
 

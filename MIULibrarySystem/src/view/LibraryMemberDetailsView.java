@@ -14,7 +14,10 @@ import javax.swing.border.EmptyBorder;
 
 import controller.ShowAllController;
 import exception.LibrarySystemException;
+import model.Admin;
 import model.LibraryMember;
+import model.LoginUser;
+import model.SuperUser;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -48,6 +51,8 @@ public class LibraryMemberDetailsView extends JFrame {
 	private JFrame previousFrame;
 	private String memberID;
 	private String[][] data;
+	private LoginUser loginUser;
+	private JButton btnEdit;
 
 	/**
 	 * Launch the application.
@@ -56,7 +61,8 @@ public class LibraryMemberDetailsView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					LibraryMemberDetailsView frame = new LibraryMemberDetailsView(null, "10001");
+					LibraryMemberDetailsView frame = new LibraryMemberDetailsView(null, "0001",
+							new SuperUser("super", "super"));
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -67,10 +73,13 @@ public class LibraryMemberDetailsView extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * 
+	 * @param loginUser
 	 */
-	public LibraryMemberDetailsView(JFrame previousFrame, String memberID) {
+	public LibraryMemberDetailsView(JFrame previousFrame, String memberID, LoginUser loginUser) {
 		this.previousFrame = previousFrame;
 		this.memberID = memberID;
+		this.loginUser = loginUser;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 423, 583);
 		contentPane = new JPanel();
@@ -128,7 +137,7 @@ public class LibraryMemberDetailsView extends JFrame {
 		lblNewLabel_9.setBounds(10, 280, 150, 20);
 		contentPane.add(lblNewLabel_9);
 
-		String[] column = { "Check Out Date", "Total Fine", "Total Paid", "Total Check Out Entries","Total OverDue" };
+		String[] column = { "Check Out Date", "Total Fine", "Total Paid", "Total Check Out Entries", "Total OverDue" };
 		data = showCheckoutRecordData();
 		jtbMemberHistory = new JTable(data, column);
 		jtbMemberHistory.setBounds(10, 310, 400, 200);
@@ -186,16 +195,38 @@ public class LibraryMemberDetailsView extends JFrame {
 			}
 		});
 		contentPane.add(btnOK);
+		if(loginUser instanceof SuperUser || loginUser instanceof Admin) {
+			btnOK.setBounds(50, 520, 150, 30);
+			btnEdit = new JButton("Edit");
+			btnEdit.setBounds(220, 520, 150, 30);
+			btnEdit.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					btnEdit_click();
+				}
+			});
+			contentPane.add(btnEdit);
+		}
+		
 
 		loadData();
+	}
+
+	protected void btnEdit_click() {
+		ShowAllController sac = new ShowAllController();
+		LibraryMember lm = sac.getMemberDetails(memberID);
+		AddMemberView amv = new AddMemberView(loginUser,lm);
+		amv.setVisible(true);
+		this.dispose();
 	}
 
 	protected void jtableClick(int selectedRow) {
 		System.out.println(selectedRow);
 		ShowAllController sac = new ShowAllController();
 		LibraryMember lm = sac.getMemberDetails(memberID);
-		
-		MemberCheckOutEntryView mcoe = new MemberCheckOutEntryView(this,lm.getCheckoutRecord().get(selectedRow));
+
+		MemberCheckOutEntryView mcoe = new MemberCheckOutEntryView(this, lm.getCheckoutRecord().get(selectedRow));
 		mcoe.setVisible(true);
 		this.setVisible(false);
 	}
@@ -209,7 +240,6 @@ public class LibraryMemberDetailsView extends JFrame {
 	protected void btnOK_click() {
 		previousFrame.setVisible(true);
 		this.dispose();
-		;
 	}
 
 	private void loadData() {

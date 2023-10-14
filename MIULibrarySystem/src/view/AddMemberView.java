@@ -38,6 +38,8 @@ public class AddMemberView extends JFrame {
 	private JButton btnSave;
 	private LoginUser loginUser;
 	private JTextField txtPhoneNumber;
+	private LibraryMember member;
+	private JLabel lblNewLabel;
 
 	/**
 	 * Launch the application.
@@ -59,11 +61,7 @@ public class AddMemberView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AddMemberView(LoginUser loginUser) {
-		this.loginUser = loginUser;
-
-		AddMemberController addMembController = new AddMemberController();
-		String membId = addMembController.generateMemberId();
+	{
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 411, 428);
@@ -75,7 +73,7 @@ public class AddMemberView extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("Add Member");
+		lblNewLabel = new JLabel("Add Member");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel.setBounds(170, 10, 88, 20);
 		contentPane.add(lblNewLabel);
@@ -89,15 +87,13 @@ public class AddMemberView extends JFrame {
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_2.setBounds(20, 80, 150, 30);
 		contentPane.add(lblNewLabel_2);
-
+		
 		txtMemberID = new JTextField();
-		txtMemberID.setText(membId);
 		txtMemberID.setEnabled(false);
 		txtMemberID.setEditable(false);
 		txtMemberID.setBounds(180, 40, 200, 30);
 		contentPane.add(txtMemberID);
-		txtMemberID.setColumns(10);
-
+		
 		txtFirstName = new JTextField();
 		txtFirstName.setBounds(180, 80, 200, 30);
 		contentPane.add(txtFirstName);
@@ -165,12 +161,12 @@ public class AddMemberView extends JFrame {
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.setBounds(263, 360, 117, 30);
 		contentPane.add(btnCancel);
-		
+
 		JLabel lblNewLabel_8 = new JLabel("Phone Number");
 		lblNewLabel_8.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_8.setBounds(20, 160, 150, 30);
 		contentPane.add(lblNewLabel_8);
-		
+
 		txtPhoneNumber = new JTextField();
 		txtPhoneNumber.setBounds(180, 160, 200, 30);
 		contentPane.add(txtPhoneNumber);
@@ -182,8 +178,39 @@ public class AddMemberView extends JFrame {
 		});
 	}
 
+	public AddMemberView(LoginUser loginUser) {
+		this.loginUser = loginUser;
+
+		AddMemberController addMembController = new AddMemberController();
+		String membId = addMembController.generateMemberId();
+		txtMemberID.setText(membId);
+	}
+
+	public AddMemberView(LoginUser loginUser, LibraryMember member) {
+
+		this.loginUser = loginUser;
+		this.member = member;
+
+		lblNewLabel.setText("Edit Member");
+		txtMemberID.setText(member.getMemberNumber());
+		txtFirstName.setText(member.getFirstName());
+		txtLastName.setText(member.getLastName());
+		txtPhoneNumber.setText(member.getPhoneNumber());
+		txtStreet.setText(member.getAddress().getStreet());
+		txtCity.setText(member.getAddress().getCity());
+		txtState.setText(member.getAddress().getState());
+		txtZip.setText(member.getAddress().getZip());
+	}
+
 	public void cancel_Click() {
-		MainMenuView mm = new MainMenuView(this.loginUser);
+		if (this.member == null) {
+			System.out.print("member is null");
+			MainMenuView mm = new MainMenuView(this.loginUser);
+		} else {
+			ShowAllMemberView samv = new ShowAllMemberView(loginUser);
+			samv.setVisible(true);
+		}
+
 		this.dispose();
 	}
 
@@ -205,18 +232,26 @@ public class AddMemberView extends JFrame {
 				throw new LibrarySystemException("Enter State");
 			if (txtZip.getText().isBlank())
 				throw new LibrarySystemException("Enter Zip");
-			if(!Helper.isNumber(txtZip.getText()))
+			if (!Helper.isNumber(txtZip.getText()))
 				throw new LibrarySystemException("Enter Valid Zip");
 
 			AddMemberController addMemberController = new AddMemberController();
 			Address add = new Address(txtStreet.getText(), txtCity.getText(), txtState.getText(), txtZip.getText());
-			LibraryMember member = new LibraryMember(txtFirstName.getText(), txtLastName.getText(), txtPhoneNumber.getText(), add,
-					txtMemberID.getText());
+			LibraryMember member = new LibraryMember(txtFirstName.getText(), txtLastName.getText(),
+					txtPhoneNumber.getText(), add, txtMemberID.getText());
 			addMemberController.addMember(member);
-			JOptionPane.showMessageDialog(this, "MEMBER ADDED SUCCESSFULLY");
+			if(member==null) {
+				JOptionPane.showMessageDialog(this, "Member added Successfully");
+				MainMenuView mmv = new MainMenuView(this.loginUser);
+				mmv.setVisible(true);
+			}
+			else {
+				JOptionPane.showMessageDialog(this, "Member Edited Successfully");
+				ShowAllMemberView samv = new ShowAllMemberView(loginUser);
+				samv.setVisible(true);
+			}
 			dispose();
-			MainMenuView mmv = new MainMenuView(this.loginUser);
-			mmv.setVisible(true);
+			
 		} catch (LibrarySystemException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
