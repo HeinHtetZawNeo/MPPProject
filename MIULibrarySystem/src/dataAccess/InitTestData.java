@@ -10,10 +10,39 @@ public class InitTestData {
 
 	public static void main(String[] args) {
 		InitTestData itd = new InitTestData();
+		itd.createFiles();
 		itd.addLoginUser();
-		itd.addBooks();
-		itd.addLibraryMember();
-		itd.addAuthor();
+//		itd.addBooks();
+//		itd.addLibraryMember();
+//		itd.addAuthor();
+		
+		//testdata
+//		LibraryMemberDao lmd = new LibraryMemberDao();
+//		HashMap<String, LibraryMember> allMember = lmd.getAllLibraryMembers();
+//		LibraryMember member = allMember.get("0001");
+//		CheckoutRecord cr = member.getCheckoutRecord().get(0);
+//		cr.getCheckoutEntries().get(0).setDueDate(cr.getCheckoutEntries().get(0).getDueDate().minusDays(30));
+//		System.out.println(cr.getCheckoutEntries().get(0).getDueDate());
+//		member.getCheckoutRecord().clear();
+//		member.getCheckoutRecord().add(cr);
+//		allMember.put(member.getMemberNumber(), member);
+//		
+//		System.out.println(allMember.get("0001").getCheckoutRecord().get(0).getCheckoutEntries().get(0).getDueDate());
+//		lmd.updateLibraryMembers(allMember);
+	}
+
+	private void createFiles() {
+		AuthorDao adao = new AuthorDao();
+		HashMap<String, Author> authMap = new HashMap<String, Author>();
+		adao.updateAllAuthorHashMap(authMap);
+		
+		BookDao bdao = new BookDao();
+		HashMap<String, Book> bookMap = new HashMap<String, Book>();
+		bdao.updateBookHashMap(bookMap);
+		
+		LibraryMemberDao mdao = new LibraryMemberDao();
+		HashMap<String, LibraryMember> mMap = new HashMap<String, LibraryMember>();
+		mdao.updateLibraryMembers(mMap);
 	}
 
 	private void addAuthor() {
@@ -46,7 +75,7 @@ public class InitTestData {
 		LoginUser user2 = new Admin("admin2", "admin2");
 		LoginUser user3 = new Librarian("lib1", "lib1");
 		LoginUser user4 = new Librarian("lib2", "lib2");
-		LoginUser user5 = new SuperUser("a", "a");
+		LoginUser user5 = new SuperUser("super", "super");
 
 		HashMap<String, LoginUser> tempHashMap = new HashMap<String, LoginUser>();
 		tempHashMap.put(user1.getUserName(), user1);
