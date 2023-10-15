@@ -15,6 +15,9 @@ import javax.swing.border.EmptyBorder;
 import controller.ShowAllController;
 import exception.LibrarySystemException;
 import model.Admin;
+import model.CheckoutEntry;
+import model.CheckoutRecord;
+import model.Librarian;
 import model.LibraryMember;
 import model.LoginUser;
 import model.SuperUser;
@@ -53,6 +56,7 @@ public class LibraryMemberDetailsView extends JFrame {
 	private String[][] data;
 	private LoginUser loginUser;
 	private JButton btnEdit;
+	private JButton btnPrint;
 
 	/**
 	 * Launch the application.
@@ -62,7 +66,7 @@ public class LibraryMemberDetailsView extends JFrame {
 			public void run() {
 				try {
 					LibraryMemberDetailsView frame = new LibraryMemberDetailsView(null, "0001",
-							new SuperUser("super", "super"));
+							new Librarian("super", "super"));
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -186,7 +190,7 @@ public class LibraryMemberDetailsView extends JFrame {
 		contentPane.add(lblZip);
 
 		btnOK = new JButton("OK");
-		btnOK.setBounds(120, 520, 150, 30);
+		btnOK.setBounds(50, 520, 100, 30);
 		btnOK.addActionListener(new ActionListener() {
 
 			@Override
@@ -195,10 +199,24 @@ public class LibraryMemberDetailsView extends JFrame {
 			}
 		});
 		contentPane.add(btnOK);
+		
+		btnPrint = new JButton("Print");
+		btnPrint.setBounds(250, 520, 100, 30);
+		btnPrint.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnPrint_click();
+			}
+		});
+		contentPane.add(btnPrint);
+		
+		
 		if(loginUser instanceof SuperUser || loginUser instanceof Admin) {
-			btnOK.setBounds(50, 520, 150, 30);
+			btnOK.setBounds(10, 520, 100, 30);
 			btnEdit = new JButton("Edit");
-			btnEdit.setBounds(220, 520, 150, 30);
+			btnEdit.setBounds(160, 520, 100, 30);
+			btnPrint.setBounds(320, 520, 100, 30);
 			btnEdit.addActionListener(new ActionListener() {
 
 				@Override
@@ -211,6 +229,41 @@ public class LibraryMemberDetailsView extends JFrame {
 		
 
 		loadData();
+	}
+
+	protected void btnPrint_click() {
+		ShowAllController sac = new ShowAllController();
+		LibraryMember member = sac.getMemberDetails(memberID);
+		System.out.println("Member ID :"+member.getMemberNumber());
+		System.out.println("First Name :"+member.getFirstName());
+		System.out.println("Last Name :"+member.getLastName());
+		System.out.println("Phone Number :"+member.getPhoneNumber());
+		System.out.println("Street :"+member.getAddress().getStreet());
+		System.out.println("City :"+member.getAddress().getCity());
+		System.out.println("State :"+member.getAddress().getState());
+		System.out.println("Zip :"+member.getAddress().getZip());
+		//Print Checkout Records
+		
+		for(CheckoutRecord cr:member.getCheckoutRecord()) {
+			System.out.print("========");
+			System.out.print("Check Out Date : "+cr.getCheckoutEntries().get(0).getCheckOutDate());
+			System.out.println("========");
+			System.out.println("Total Fine : "+cr.getTotalFine());
+			if(cr.getDatePaid()==null)
+				System.out.println("Date Paid : N/A");
+			else
+				System.out.println("Date Paid : "+cr.getDatePaid());
+			for(CheckoutEntry ce:cr.getCheckoutEntries()) {
+				System.out.print("==");
+				System.out.print("ISBN Number : "+ce.getCheckedOutbook().getBook().getIsbnNumber());
+				System.out.println("==");
+				System.out.println("Book Title : "+ce.getCheckedOutbook().getBook().getTitle());
+				System.out.println("Book Unique Copy Number : "+ce.getCheckedOutbook().getUniqueCopyNumber());
+				System.out.println("Due Date : "+ce.getDueDate());
+			}
+			
+		}
+		
 	}
 
 	protected void btnEdit_click() {

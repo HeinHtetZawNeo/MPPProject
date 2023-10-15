@@ -53,8 +53,8 @@ public class CheckOutBookView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-//					CheckOutBookView frame = new CheckOutBookView(null);
-//					frame.setVisible(true);
+					CheckOutBookView frame = new CheckOutBookView(null);
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -187,13 +187,13 @@ public class CheckOutBookView extends JFrame {
 			if (bookCopyList.size() == 0)
 				throw new LibrarySystemException("Add at least one Book");
 
-			CheckOutBookController cob = new CheckOutBookController();
+			CheckOutBookController cobv = new CheckOutBookController();
 
 			List<BookCopy> myBookCopy = new ArrayList<BookCopy>();
 			this.bookCopyList.forEach((x, v) -> {
 				myBookCopy.add(v);
 			});
-			member = cob.checkOut(member, myBookCopy);
+			member = cobv.checkOut(member, myBookCopy);
 
 			JOptionPane.showMessageDialog(this, "Checkout Successfully");
 			MainMenuView mmv = new MainMenuView(this.loginuser);

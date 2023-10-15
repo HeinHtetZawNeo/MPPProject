@@ -58,7 +58,6 @@ public class CheckOutBookController {
 
 		CheckoutRecord checkoutRecord = new CheckoutRecord();
 		for (BookCopy bc : bookCopyList) {
-			System.out.println(bc.getBook().getTitle());
 			Book b = bookHashMap.get(bc.getBook().getIsbnNumber());
 
 			for (BookCopy dbBC : b.getBookCopyList()) {
@@ -66,8 +65,6 @@ public class CheckOutBookController {
 					if (!dbBC.isAvailability()) {
 						throw new LibrarySystemException(dbBC.getBook().getTitle() + " Copy is not available");
 					} else {
-						System.out.println(dbBC.getUniqueCopyNumber());
-						System.out.println("Availb - " + dbBC.isAvailability());
 						dbBC.setAvailability(false);
 
 						CheckoutEntry ce = new CheckoutEntry(LocalDate.now(),
