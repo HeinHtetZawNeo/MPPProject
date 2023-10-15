@@ -53,8 +53,8 @@ public class CheckOutBookView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CheckOutBookView frame = new CheckOutBookView(null);
-					frame.setVisible(true);
+//					CheckOutBookView frame = new CheckOutBookView(null);
+//					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
