@@ -96,18 +96,33 @@ public class ShowAllController {
 
 	private int countOverDue(List<CheckoutEntry> checkoutEntries) {
 		int result = 0;
-		for(CheckoutEntry ce:checkoutEntries) {
-			if(Helper.dateDifferent(LocalDate.now(),ce.getDueDate() )<0) {
+		for (CheckoutEntry ce : checkoutEntries) {
+			if (Helper.dateDifferent(LocalDate.now(), ce.getDueDate()) < 0) {
 				result++;
 			}
 		}
 		return result;
 	}
 
-	public Book getBook(String isbn) {
+	public Book getBookByISBN(String isbn) {
 		BookDao bookdao = new BookDao();
 
 		return bookdao.getAllBook().get(isbn);
+	}
+
+	public Book getBookByTitle(String title) {
+		BookDao bookdao = new BookDao();
+		HashMap<String, Book> allBooks = bookdao.getAllBook();
+		for (Map.Entry<String, Book> e : allBooks.entrySet()) {
+			if (e.getValue().getTitle().equals(title))
+				return e.getValue();
+		}
+		return null;
+	}
+
+	public HashMap<String, LibraryMember> getAllMember() {
+		LibraryMemberDao lmdao = new LibraryMemberDao();
+		return lmdao.getAllLibraryMembers();
 	}
 
 }

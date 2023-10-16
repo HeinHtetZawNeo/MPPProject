@@ -105,7 +105,6 @@ public class ShowAllMemberView extends JFrame {
 		});
 		// make jtable not to editable
 		memberTable.setDefaultEditor(Object.class, null);
-		memberTable.setAutoCreateRowSorter(true);
 		// memberTable.setBounds(10, 30, 450, 300);
 
 		JScrollPane sp = new JScrollPane(memberTable);

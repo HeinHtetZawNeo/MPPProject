@@ -19,6 +19,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.SwingConstants;
 
 public class LoginView extends JFrame {
 
@@ -40,60 +41,67 @@ public class LoginView extends JFrame {
 	public LoginView() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("WELCOME TO MAHARISHI INTERNATIONAL UNIVERSITY LIBRARY");
-		setBounds(200, 200, 650, 500);
+		setBounds(200, 200, 640, 427);
 
 		contentPane = new JPanel();
-		contentPane.setBackground(new Color(255, 255, 255));
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		contentPane.setLayout(null); // Use null layout for absolute positioning
-
-		// Background Image Label
-		JLabel backgroundLabel = new JLabel();
-		backgroundLabel.setBackground(Color.PINK);
-		backgroundLabel.setBounds(3, 16, 640, 262);
-		ImageIcon imageIcon = new ImageIcon(LoginView.class.getResource("/view/resources/IMAGE3.jpg"));
-		backgroundLabel.setIcon(imageIcon);
-		contentPane.add(backgroundLabel);
-
-		// Username Label
-		JLabel usernameLabel = new JLabel("Username:");
-		usernameLabel.setFont(new Font("Arial", Font.PLAIN, 30));
-		usernameLabel.setBounds(33, 304, 213, 45);
-		contentPane.add(usernameLabel);
-
-		// Username Field
-		usernameField = new JTextField(20);
-		usernameField.setBounds(199, 312, 221, 35);
-		contentPane.add(usernameField);
-
-		// Password Label
-		JLabel passwordLabel = new JLabel("Password:");
-		passwordLabel.setFont(new Font("Arial", Font.PLAIN, 30));
-		passwordLabel.setBounds(33, 358, 181, 45);
-		contentPane.add(passwordLabel);
-
-		// Password Field
-		passwordField = new JPasswordField();
-		passwordField.setBounds(199, 371, 221, 35);
-		contentPane.add(passwordField);
-
-		// Enter Button
-		JButton enterButton = new JButton("ENTER");
-		enterButton.setFont(new Font("Arial", Font.PLAIN, 24));
-		enterButton.setBounds(465, 317, 150, 50);
-		contentPane.add(enterButton);
-
-		enterButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// Perform actions when the Enter button is clicked
-				login_Click();
-
-			}
-		});
+				contentPane.setLayout(null);
+				
+				JPanel panel = new JPanel();
+				panel.setBounds(170, 100, 300, 200);
+				panel.setBackground(Color.WHITE);
+				contentPane.add(panel);
+						panel.setLayout(null);
+										
+												// Username Label
+												JLabel usernameLabel = new JLabel("Username");
+												usernameLabel.setBounds(20, 70, 100, 16);
+												panel.add(usernameLabel);
+												usernameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+								
+										// Username Field
+										usernameField = new JTextField(20);
+										usernameField.setBounds(120, 70, 150, 20);
+										panel.add(usernameField);
+								
+										// Password Label
+										JLabel passwordLabel = new JLabel("Password");
+										passwordLabel.setBounds(20, 100, 100, 16);
+										panel.add(passwordLabel);
+										passwordLabel.setHorizontalAlignment(SwingConstants.CENTER);
+						
+								// Password Field
+								passwordField = new JPasswordField();
+								passwordField.setBounds(120, 100, 150, 20);
+								panel.add(passwordField);
+														
+																// Enter Button
+																JButton enterButton = new JButton("Login");
+																enterButton.setBounds(100, 150, 100, 29);
+																panel.add(enterButton);
+																
+																JLabel lblNewLabel = new JLabel("Log In");
+																lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD, 16));
+																lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+																lblNewLabel.setBounds(0, 42, 300, 16);
+																panel.add(lblNewLabel);
+						
+								enterButton.addActionListener(new ActionListener() {
+									@Override
+									public void actionPerformed(ActionEvent e) {
+										// Perform actions when the Enter button is clicked
+										login_Click();
+						
+									}
+								});
+		
+				// Background Image Label
+				JLabel backgroundLabel = new JLabel();
+				backgroundLabel.setBounds(0, 0, 650, 400);
+				backgroundLabel.setIcon(new ImageIcon("/Users/heinhtetzaw/Documents/MIU Resources/3. MPP/Git/MPPProject/MIULibrarySystem/rsc/IMAGE3.jpg"));
+				contentPane.add(backgroundLabel);
 	}// constructor
 
 	protected void login_Click() {
@@ -110,7 +118,7 @@ public class LoginView extends JFrame {
 				LoginUser loginUser = controller.verifyUsernamePassword(username, password);
 				if (loginUser == null)
 					throw new LoginException("Invalid Credential");
-				
+
 				MainMenuView mm = new MainMenuView(loginUser);
 				mm.setVisible(true);
 				this.dispose();

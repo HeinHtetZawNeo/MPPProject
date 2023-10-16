@@ -14,6 +14,7 @@ import exception.LibrarySystemException;
 import helper.Helper;
 import model.LibraryMember;
 import model.LoginUser;
+import model.SuperUser;
 import model.Address;
 
 import javax.swing.JLabel;
@@ -38,7 +39,7 @@ public class AddMemberView extends JFrame {
 	private JButton btnSave;
 	private LoginUser loginUser;
 	private JTextField txtPhoneNumber;
-	private LibraryMember member;
+	private LibraryMember editMember;
 	private JLabel lblNewLabel;
 
 	/**
@@ -48,7 +49,7 @@ public class AddMemberView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AddMemberView frame = new AddMemberView(null);
+					AddMemberView frame = new AddMemberView(new SuperUser("super", "super"));
 					frame.setVisible(true);
 
 				} catch (Exception e) {
@@ -87,13 +88,13 @@ public class AddMemberView extends JFrame {
 		lblNewLabel_2.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel_2.setBounds(20, 80, 150, 30);
 		contentPane.add(lblNewLabel_2);
-		
+
 		txtMemberID = new JTextField();
 		txtMemberID.setEnabled(false);
 		txtMemberID.setEditable(false);
 		txtMemberID.setBounds(180, 40, 200, 30);
 		contentPane.add(txtMemberID);
-		
+
 		txtFirstName = new JTextField();
 		txtFirstName.setBounds(180, 80, 200, 30);
 		contentPane.add(txtFirstName);
@@ -186,24 +187,24 @@ public class AddMemberView extends JFrame {
 		txtMemberID.setText(membId);
 	}
 
-	public AddMemberView(LoginUser loginUser, LibraryMember member) {
+	public AddMemberView(LoginUser loginUser, LibraryMember editMember) {
 
 		this.loginUser = loginUser;
-		this.member = member;
+		this.editMember = editMember;
 
 		lblNewLabel.setText("Edit Member");
-		txtMemberID.setText(member.getMemberNumber());
-		txtFirstName.setText(member.getFirstName());
-		txtLastName.setText(member.getLastName());
-		txtPhoneNumber.setText(member.getPhoneNumber());
-		txtStreet.setText(member.getAddress().getStreet());
-		txtCity.setText(member.getAddress().getCity());
-		txtState.setText(member.getAddress().getState());
-		txtZip.setText(member.getAddress().getZip());
+		txtMemberID.setText(editMember.getMemberNumber());
+		txtFirstName.setText(editMember.getFirstName());
+		txtLastName.setText(editMember.getLastName());
+		txtPhoneNumber.setText(editMember.getPhoneNumber());
+		txtStreet.setText(editMember.getAddress().getStreet());
+		txtCity.setText(editMember.getAddress().getCity());
+		txtState.setText(editMember.getAddress().getState());
+		txtZip.setText(editMember.getAddress().getZip());
 	}
 
 	public void cancel_Click() {
-		if (this.member == null) {
+		if (this.editMember == null) {
 			System.out.print("member is null");
 			MainMenuView mm = new MainMenuView(this.loginUser);
 		} else {
@@ -239,19 +240,20 @@ public class AddMemberView extends JFrame {
 			Address add = new Address(txtStreet.getText(), txtCity.getText(), txtState.getText(), txtZip.getText());
 			LibraryMember member = new LibraryMember(txtFirstName.getText(), txtLastName.getText(),
 					txtPhoneNumber.getText(), add, txtMemberID.getText());
-			addMemberController.addMember(member);
-			if(member==null) {
+			if (editMember == null) {
+				addMemberController.addMember(member);
 				JOptionPane.showMessageDialog(this, "Member added Successfully");
 				MainMenuView mmv = new MainMenuView(this.loginUser);
 				mmv.setVisible(true);
-			}
-			else {
+			} else {
+				member.setCheckoutRecord(editMember.getCheckoutRecord());
+				addMemberController.addMember(member);
 				JOptionPane.showMessageDialog(this, "Member Edited Successfully");
 				ShowAllMemberView samv = new ShowAllMemberView(loginUser);
 				samv.setVisible(true);
 			}
 			dispose();
-			
+
 		} catch (LibrarySystemException e) {
 			JOptionPane.showMessageDialog(this, e.getMessage());
 		}
