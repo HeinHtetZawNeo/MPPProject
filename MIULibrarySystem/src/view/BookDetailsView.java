@@ -217,9 +217,11 @@ public class BookDetailsView extends JFrame {
 
 	protected void bookCopyTable_click() {
 		String memberID = (String) bookCopyTable.getValueAt(bookCopyTable.getSelectedRow(), 1);
-		this.setVisible(false);
-		LibraryMemberDetailsView mhv = new LibraryMemberDetailsView(this, memberID, this.loginUser);
-		mhv.setVisible(true);
+		if (!memberID.equals("N/A")) {
+			this.setVisible(false);
+			LibraryMemberDetailsView mhv = new LibraryMemberDetailsView(this, memberID, this.loginUser);
+			mhv.setVisible(true);
+		}
 	}
 
 	private String[][] showBookCopyTableData() {

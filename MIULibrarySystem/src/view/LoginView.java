@@ -98,12 +98,16 @@ public class LoginView extends JFrame {
 		});
 
 		// Background Image Label
-		JLabel backgroundLabel = new JLabel();
-		backgroundLabel.setBounds(0, 0, 650, 400);
-		backgroundLabel.setIcon(new ImageIcon(
-				"/Users/heinhtetzaw/Documents/MIU Resources/3. MPP/Git/MPPProject/MIULibrarySystem/rsc/IMAGE3.jpg"));
-		contentPane.add(backgroundLabel);
-		
+		JLabel backgroundImage = new JLabel();
+		backgroundImage.setBounds(0, 0, 650, 400);
+		if (System.getProperty("os.name").contains("Mac")) {
+			backgroundImage.setIcon(new ImageIcon(LoginView.class.getResource("/rsc/IMAGE3.jpg")));
+		} else {
+			backgroundImage.setIcon(new ImageIcon(LoginView.class.getResource("\\rsc\\IMAGE3.jpg")));
+		}
+
+		contentPane.add(backgroundImage);
+
 		this.getRootPane().setDefaultButton(enterButton);
 	}// constructor
 
