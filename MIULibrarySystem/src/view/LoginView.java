@@ -47,61 +47,64 @@ public class LoginView extends JFrame {
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
 		setResizable(false);
-				contentPane.setLayout(null);
-				
-				JPanel panel = new JPanel();
-				panel.setBounds(170, 100, 300, 200);
-				panel.setBackground(Color.WHITE);
-				contentPane.add(panel);
-						panel.setLayout(null);
-										
-												// Username Label
-												JLabel usernameLabel = new JLabel("Username");
-												usernameLabel.setBounds(20, 70, 100, 16);
-												panel.add(usernameLabel);
-												usernameLabel.setHorizontalAlignment(SwingConstants.CENTER);
-								
-										// Username Field
-										usernameField = new JTextField(20);
-										usernameField.setBounds(120, 70, 150, 20);
-										panel.add(usernameField);
-								
-										// Password Label
-										JLabel passwordLabel = new JLabel("Password");
-										passwordLabel.setBounds(20, 100, 100, 16);
-										panel.add(passwordLabel);
-										passwordLabel.setHorizontalAlignment(SwingConstants.CENTER);
-						
-								// Password Field
-								passwordField = new JPasswordField();
-								passwordField.setBounds(120, 100, 150, 20);
-								panel.add(passwordField);
-														
-																// Enter Button
-																JButton enterButton = new JButton("Login");
-																enterButton.setBounds(100, 150, 100, 29);
-																panel.add(enterButton);
-																
-																JLabel lblNewLabel = new JLabel("Log In");
-																lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD, 16));
-																lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-																lblNewLabel.setBounds(0, 42, 300, 16);
-																panel.add(lblNewLabel);
-						
-								enterButton.addActionListener(new ActionListener() {
-									@Override
-									public void actionPerformed(ActionEvent e) {
-										// Perform actions when the Enter button is clicked
-										login_Click();
-						
-									}
-								});
+		contentPane.setLayout(null);
+
+		JPanel panel = new JPanel();
+		panel.setBounds(170, 100, 300, 200);
+		panel.setBackground(Color.WHITE);
+		contentPane.add(panel);
+		panel.setLayout(null);
+
+		// Username Label
+		JLabel usernameLabel = new JLabel("Username");
+		usernameLabel.setBounds(20, 70, 100, 16);
+		panel.add(usernameLabel);
+		usernameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+		// Username Field
+		usernameField = new JTextField(20);
+		usernameField.setBounds(120, 70, 150, 20);
+		panel.add(usernameField);
+
+		// Password Label
+		JLabel passwordLabel = new JLabel("Password");
+		passwordLabel.setBounds(20, 100, 100, 16);
+		panel.add(passwordLabel);
+		passwordLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+		// Password Field
+		passwordField = new JPasswordField();
+		passwordField.setBounds(120, 100, 150, 20);
+		panel.add(passwordField);
+
+		// Enter Button
+		JButton enterButton = new JButton("Login");
+		enterButton.setBounds(100, 150, 100, 29);
+		panel.add(enterButton);
+
+		JLabel lblNewLabel = new JLabel("Log In");
+		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD, 16));
+		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel.setBounds(0, 42, 300, 16);
+		panel.add(lblNewLabel);
+
+		enterButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// Perform actions when the Enter button is clicked
+				login_Click();
+
+			}
+		});
+
+		// Background Image Label
+		JLabel backgroundLabel = new JLabel();
+		backgroundLabel.setBounds(0, 0, 650, 400);
+		backgroundLabel.setIcon(new ImageIcon(
+				"/Users/heinhtetzaw/Documents/MIU Resources/3. MPP/Git/MPPProject/MIULibrarySystem/rsc/IMAGE3.jpg"));
+		contentPane.add(backgroundLabel);
 		
-				// Background Image Label
-				JLabel backgroundLabel = new JLabel();
-				backgroundLabel.setBounds(0, 0, 650, 400);
-				backgroundLabel.setIcon(new ImageIcon("/Users/heinhtetzaw/Documents/MIU Resources/3. MPP/Git/MPPProject/MIULibrarySystem/rsc/IMAGE3.jpg"));
-				contentPane.add(backgroundLabel);
+		this.getRootPane().setDefaultButton(enterButton);
 	}// constructor
 
 	protected void login_Click() {
