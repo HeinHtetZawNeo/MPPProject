@@ -100,11 +100,7 @@ public class LoginView extends JFrame {
 		// Background Image Label
 		JLabel backgroundImage = new JLabel();
 		backgroundImage.setBounds(0, 0, 650, 400);
-		if (System.getProperty("os.name").contains("Mac")) {
-			backgroundImage.setIcon(new ImageIcon(LoginView.class.getResource("/rsc/IMAGE3.jpg")));
-		} else {
-			backgroundImage.setIcon(new ImageIcon(LoginView.class.getResource("\\rsc\\IMAGE3.jpg")));
-		}
+		backgroundImage.setIcon(new ImageIcon(LoginView.class.getResource("/rsc/IMAGE3.jpg")));
 
 		contentPane.add(backgroundImage);
 
