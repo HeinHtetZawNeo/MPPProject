@@ -241,11 +241,13 @@ public class AddMemberView extends JFrame {
 			LibraryMember member = new LibraryMember(txtFirstName.getText(), txtLastName.getText(),
 					txtPhoneNumber.getText(), add, txtMemberID.getText());
 			if (editMember == null) {
+				//Add New Member
 				addMemberController.addMember(member);
 				JOptionPane.showMessageDialog(this, "Member added Successfully");
 				MainMenuView mmv = new MainMenuView(this.loginUser);
 				mmv.setVisible(true);
 			} else {
+				//Edit Member
 				member.setCheckoutRecord(editMember.getCheckoutRecord());
 				addMemberController.addMember(member);
 				JOptionPane.showMessageDialog(this, "Member Edited Successfully");
